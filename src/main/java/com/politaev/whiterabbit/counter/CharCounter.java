@@ -13,6 +13,7 @@ public class CharCounter {
         int[] charCountArray = initCharCountArray();
         string.chars()
                 .map(charIndex -> charIndex - ARRAY_ZERO_ELEMENT_CHAR_INDEX)
+                .filter(arrayIndex -> arrayIndex >= 0 && arrayIndex < COUNT_ARRAY_SIZE)
                 .forEach(arrayIndex -> charCountArray[arrayIndex]++);
         return charCountArray;
     }

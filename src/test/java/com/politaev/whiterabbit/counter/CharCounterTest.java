@@ -41,4 +41,11 @@ public class CharCounterTest {
         CharCount charCount2 = charCounter.countChars("zzzzz");
         assertNotEquals(charCount1, charCount2);
     }
+
+    @Test
+    public void testIgnoredCharacters() {
+        CharCount charCount1 = charCounter.countChars("tests");
+        CharCount charCount2 = charCounter.countChars("test's");
+        assertEquals(charCount1, charCount2);
+    }
 }
