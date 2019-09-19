@@ -5,26 +5,38 @@ class LatinCharCounter {
     private static final int COUNT_ARRAY_SIZE = 'z' - 'a' + 1;
 
     private final String string;
+    private int[] charCountArray;
 
     LatinCharCounter(String string) {
         this.string = string;
     }
 
     CharCount countChars() {
-        int[] charCountArray = countCharsToArray();
+        countCharsToArray();
         return new CharCount(charCountArray);
     }
 
-    private int[] countCharsToArray() {
-        int[] charCountArray = initCharCountArray();
+    private void countCharsToArray() {
+        charCountArray = initCharCountArray();
         string.chars()
-                .map(charIndex -> charIndex - ARRAY_ZERO_ELEMENT_CHAR_INDEX)
-                .filter(arrayIndex -> arrayIndex >= 0 && arrayIndex < COUNT_ARRAY_SIZE)
-                .forEach(arrayIndex -> charCountArray[arrayIndex]++);
-        return charCountArray;
+                .map(this::charIndexToArrayIndex)
+                .filter(this::indexWithinArray)
+                .forEach(this::incrementCharCount);
     }
 
     private int[] initCharCountArray() {
         return new int[COUNT_ARRAY_SIZE];
+    }
+
+    private int charIndexToArrayIndex(int charIndex) {
+        return charIndex - ARRAY_ZERO_ELEMENT_CHAR_INDEX;
+    }
+
+    private boolean indexWithinArray(int index) {
+        return index >= 0 && index < COUNT_ARRAY_SIZE;
+    }
+
+    private void incrementCharCount(int charIndexInArray) {
+        charCountArray[charIndexInArray]++;
     }
 }
