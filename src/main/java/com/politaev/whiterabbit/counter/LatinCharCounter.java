@@ -2,7 +2,7 @@ package com.politaev.whiterabbit.counter;
 
 class LatinCharCounter {
     private static final int ARRAY_ZERO_ELEMENT_CHAR_INDEX = (int) 'a';
-    private static final int COUNT_ARRAY_SIZE = 'z' - 'a' + 1;
+    private static final int COUNT_ARRAY_SIZE = Alphabet.LATIN.getNumberOfChars();
 
     private final String string;
     private int[] charCountArray;
@@ -13,7 +13,7 @@ class LatinCharCounter {
 
     CharCount countChars() {
         countCharsToArray();
-        return new CharCount(charCountArray);
+        return new CharCount(Alphabet.LATIN, charCountArray);
     }
 
     private void countCharsToArray() {

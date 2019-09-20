@@ -1,11 +1,14 @@
 package com.politaev.whiterabbit.counter;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public final class CharCount {
+    private final Alphabet alphabet;
     private final int[] countOfEveryChar;
 
-    CharCount(int[] countOfEveryChar) {
+    CharCount(Alphabet alphabet, int[] countOfEveryChar) {
+        this.alphabet = alphabet;
         this.countOfEveryChar = countOfEveryChar;
     }
 
@@ -14,7 +17,8 @@ public final class CharCount {
         if (this == other) return true;
         if (other == null || getClass() != other.getClass()) return false;
         CharCount otherCharCount = (CharCount) other;
-        return Arrays.equals(countOfEveryChar, otherCharCount.countOfEveryChar);
+        return Objects.equals(alphabet, otherCharCount.alphabet) &&
+                Arrays.equals(countOfEveryChar, otherCharCount.countOfEveryChar);
     }
 
     @Override
