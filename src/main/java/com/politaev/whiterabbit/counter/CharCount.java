@@ -2,6 +2,7 @@ package com.politaev.whiterabbit.counter;
 
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.stream.IntStream;
 
 public final class CharCount {
     private final Alphabet alphabet;
@@ -10,6 +11,29 @@ public final class CharCount {
     CharCount(Alphabet alphabet, int[] countOfEveryChar) {
         this.alphabet = alphabet;
         this.countOfEveryChar = countOfEveryChar;
+    }
+
+    public CharCount add(CharCount otherCharCount) {
+        requireSuitableForBinaryOperation(otherCharCount);
+        int[] resultCountingArray = sumOfCountingArrays(otherCharCount.countOfEveryChar);
+        return new CharCount(alphabet, resultCountingArray);
+    }
+
+    private void requireSuitableForBinaryOperation(CharCount otherCharCount) {
+        Objects.requireNonNull(otherCharCount);
+        requireEqualAlphabets(otherCharCount);
+    }
+
+    private void requireEqualAlphabets(CharCount otherCharCount) {
+        if (!alphabet.equals(otherCharCount.alphabet)) {
+            throw new IllegalArgumentException("Operations must be performed on CharCounts using the same Alphabet.");
+        }
+    }
+
+    private int[] sumOfCountingArrays(int[] otherCountingArray) {
+        return IntStream.range(0, countOfEveryChar.length)
+                .map(i -> countOfEveryChar[i] + otherCountingArray[i])
+                .toArray();
     }
 
     @Override
