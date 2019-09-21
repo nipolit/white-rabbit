@@ -41,6 +41,18 @@ public final class CharCount {
                 .toArray();
     }
 
+    public CharCount subtract(CharCount otherCharCount) {
+        requireSuitableForBinaryOperation(otherCharCount);
+        int[] resultCountingArray = diffOfCountingArrays(otherCharCount.countOfEveryChar);
+        return new CharCount(alphabet, resultCountingArray);
+    }
+
+    private int[] diffOfCountingArrays(int[] otherCountingArray) {
+        return IntStream.range(0, countOfEveryChar.length)
+                .map(i -> countOfEveryChar[i] - otherCountingArray[i])
+                .toArray();
+    }
+
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;

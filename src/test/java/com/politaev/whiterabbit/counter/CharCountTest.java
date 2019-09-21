@@ -15,4 +15,14 @@ public class CharCountTest {
         CharCount expectedSum = countLatinChars(string1 + string2);
         assertEquals(expectedSum, actualSum);
     }
+
+    @Test
+    public void testCharCountDiff() {
+        String string1 = "pineapple", string2 = "pine";
+        CharCount charCount1 = countLatinChars(string1);
+        CharCount charCount2 = countLatinChars(string2);
+        CharCount actualDiff = charCount1.subtract(charCount2);
+        CharCount expectedDiff = countLatinChars("apple");
+        assertEquals(expectedDiff, actualDiff);
+    }
 }
