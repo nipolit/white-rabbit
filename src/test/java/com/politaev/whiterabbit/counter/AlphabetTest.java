@@ -13,8 +13,14 @@ public class AlphabetTest {
     @Test
     public void testAlphabetCreatedFromCharRange() {
         char[] chars = new char[]{'s', 't', 'u', 'v'};
-        Alphabet createdFromArray = new Alphabet(chars);
+        Alphabet createdFromArray = Alphabet.ofChars(chars);
         Alphabet createdFromRange = Alphabet.ofRange('s', 'v');
         assertEquals(createdFromArray, createdFromRange);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testRequiresDistinctChars() {
+        char[] chars = new char[]{'a', 'b', 'b', 'c'};
+        Alphabet.ofChars(chars);
     }
 }

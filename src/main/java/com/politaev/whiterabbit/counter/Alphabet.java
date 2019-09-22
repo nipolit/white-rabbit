@@ -8,8 +8,27 @@ final class Alphabet {
     static final Alphabet LATIN = ofRange('a', 'z');
     private final char[] chars;
 
-    Alphabet(char[] chars) {
+    private Alphabet(char[] chars) {
         this.chars = chars;
+    }
+
+    static Alphabet ofChars(char[] chars) {
+        requireDistinctChars(chars);
+        return new Alphabet(chars);
+    }
+
+    private static void requireDistinctChars(char[] chars) {
+        long numberOfDistinctChars = countDistinctChars(chars);
+        if (numberOfDistinctChars < chars.length) {
+            throw new IllegalArgumentException("All characters in the alphabet must be distinct");
+        }
+    }
+
+    private static long countDistinctChars(char[] chars) {
+        return IntStream.range(0, chars.length)
+                .map(i -> chars[i])
+                .distinct()
+                .count();
     }
 
     static Alphabet ofRange(char firstChar, char lastChar) {
