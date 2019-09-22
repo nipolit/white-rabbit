@@ -4,6 +4,8 @@ import org.junit.Test;
 
 import static com.politaev.whiterabbit.counter.CharCount.countLatinChars;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class CharCountTest {
     @Test
@@ -40,5 +42,21 @@ public class CharCountTest {
         CharCount initialCharCount = countLatinChars(string);
         initialCharCount.subtract(countLatinChars("lasers"));
         assertEquals(countLatinChars(string), initialCharCount);
+    }
+
+    @Test
+    public void testCharCountNotIncludesOther() {
+        String string = "team", notIncludedString = "i";
+        assertFalse(
+                countLatinChars(string).includes(countLatinChars(notIncludedString))
+        );
+    }
+
+    @Test
+    public void testCharCountIncludesOther() {
+        String string = "team", includedString = "me";
+        assertTrue(
+                countLatinChars(string).includes(countLatinChars(includedString))
+        );
     }
 }

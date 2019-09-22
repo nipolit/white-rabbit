@@ -53,6 +53,16 @@ public final class CharCount {
                 .toArray();
     }
 
+    public boolean includes(CharCount otherCharCount) {
+        requireSuitableForBinaryOperation(otherCharCount);
+        return countingArrayIncludesOther(otherCharCount.countOfEveryChar);
+    }
+
+    private boolean countingArrayIncludesOther(int[] otherCountingArray) {
+        return IntStream.range(0, countOfEveryChar.length)
+                .allMatch(i -> countOfEveryChar[i] >= otherCountingArray[i]);
+    }
+
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
