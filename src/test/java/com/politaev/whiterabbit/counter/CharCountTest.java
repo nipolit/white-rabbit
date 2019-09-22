@@ -17,6 +17,14 @@ public class CharCountTest {
     }
 
     @Test
+    public void testAddNotChangesState() {
+        String string = "sharks";
+        CharCount initialCharCount = countLatinChars(string);
+        initialCharCount.add(countLatinChars("lasers"));
+        assertEquals(countLatinChars(string), initialCharCount);
+    }
+
+    @Test
     public void testCharCountDiff() {
         String string1 = "pineapple", string2 = "pine";
         CharCount charCount1 = countLatinChars(string1);
@@ -24,5 +32,13 @@ public class CharCountTest {
         CharCount actualDiff = charCount1.subtract(charCount2);
         CharCount expectedDiff = countLatinChars("apple");
         assertEquals(expectedDiff, actualDiff);
+    }
+
+    @Test
+    public void testSubtractNotChangesState() {
+        String string = "sharkswithlasers";
+        CharCount initialCharCount = countLatinChars(string);
+        initialCharCount.subtract(countLatinChars("lasers"));
+        assertEquals(countLatinChars(string), initialCharCount);
     }
 }
