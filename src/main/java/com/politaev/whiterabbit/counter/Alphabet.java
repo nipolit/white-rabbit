@@ -48,6 +48,10 @@ final class Alphabet {
         return chars.length;
     }
 
+    char[] getChars() {
+        return Arrays.copyOf(chars, chars.length);
+    }
+
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
