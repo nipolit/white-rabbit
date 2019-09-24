@@ -26,12 +26,16 @@ public final class CharCount {
 
     private void requireSuitableForBinaryOperation(CharCount otherCharCount) {
         Objects.requireNonNull(otherCharCount);
-        requireEqualAlphabets(otherCharCount);
+        requireEqualAlphabetsForOperation(otherCharCount.alphabet);
     }
 
-    private void requireEqualAlphabets(CharCount otherCharCount) {
-        if (!alphabet.equals(otherCharCount.alphabet)) {
-            throw new IllegalArgumentException("Operations must be performed on CharCounts using the same Alphabet.");
+    private void requireEqualAlphabetsForOperation(Alphabet otherAlphabet) {
+        requireEqualAlphabets(otherAlphabet, "Operations must be performed on CharCounts using the same Alphabet.");
+    }
+
+    private void requireEqualAlphabets(Alphabet otherAlphabet, String message) {
+        if (!alphabet.equals(otherAlphabet)) {
+            throw new IllegalArgumentException(message);
         }
     }
 
@@ -61,6 +65,28 @@ public final class CharCount {
     private boolean countingArrayIncludesOther(int[] otherCountingArray) {
         return IntStream.range(0, countOfEveryChar.length)
                 .allMatch(i -> countOfEveryChar[i] >= otherCountingArray[i]);
+    }
+
+    public CharCount compress(AlphabetCompression alphabetCompression) {
+        requireSuitableAlphabetCompression(alphabetCompression);
+        int[] compressedCountingArray = compressCountingArray(alphabetCompression);
+        return new CharCount(alphabetCompression.getTargetAlphabet(), compressedCountingArray);
+    }
+
+    private void requireSuitableAlphabetCompression(AlphabetCompression alphabetCompression) {
+        Objects.requireNonNull(alphabetCompression);
+        requireEqualAlphabets(alphabetCompression.getSourceAlphabet(), "Source alphabet of AlphabetCompression must match the one of CharCount");
+    }
+
+    private int[] compressCountingArray(AlphabetCompression alphabetCompression) {
+        return IntStream.range(0, alphabetCompression.getTargetAlphabet().getNumberOfChars())
+                .map(alphabetCompression::getSourceIndex)
+                .map(sourceArrayIndex -> countOfEveryChar[sourceArrayIndex])
+                .toArray();
+    }
+
+    public Alphabet getAlphabet() {
+        return alphabet;
     }
 
     @Override
