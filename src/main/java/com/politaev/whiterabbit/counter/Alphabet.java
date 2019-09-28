@@ -12,7 +12,7 @@ final class Alphabet {
         this.chars = chars;
     }
 
-    static Alphabet ofChars(char[] chars) {
+    static Alphabet ofChars(char... chars) {
         requireDistinctChars(chars);
         return new Alphabet(chars);
     }
