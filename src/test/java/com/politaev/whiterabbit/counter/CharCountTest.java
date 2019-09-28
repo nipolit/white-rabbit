@@ -141,4 +141,22 @@ public class CharCountTest {
         initialCharCount.compress(alphabetCompression);
         assertEquals(countLatinChars(string), initialCharCount);
     }
+
+    @Test
+    public void testCharCountTotalChars() {
+        String string = "nebuchadnezzar";
+        CharCount charCount = countLatinChars(string);
+        int expectedTotalChars = string.length();
+        assertEquals(expectedTotalChars, charCount.totalChars());
+    }
+
+    @Test
+    public void testCharCountTotalCharsWithCustomAlphabet() {
+        String string = "nebuchadnezzar";
+        Alphabet targetAlphabet = Alphabet.ofChars(new char[]{'a', 'b', 'c', 'd', 'e', 'h', 'n', 'r', 'u', 'z'});
+        AlphabetCompression alphabetCompression = AlphabetCompression.from(LATIN).to(targetAlphabet);
+        CharCount charCount = countLatinChars(string).compress(alphabetCompression);
+        int expectedTotalChars = string.length();
+        assertEquals(expectedTotalChars, charCount.totalChars());
+    }
 }

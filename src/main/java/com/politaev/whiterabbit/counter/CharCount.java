@@ -85,6 +85,10 @@ public final class CharCount {
                 .toArray();
     }
 
+    public int totalChars() {
+        return IntStream.of(countOfEveryChar).sum();
+    }
+
     public Alphabet getAlphabet() {
         return alphabet;
     }
