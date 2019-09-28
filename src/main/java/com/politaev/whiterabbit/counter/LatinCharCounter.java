@@ -1,6 +1,6 @@
 package com.politaev.whiterabbit.counter;
 
-class LatinCharCounter {
+class LatinCharCounter implements CharCounter {
     private static final int ARRAY_ZERO_ELEMENT_CHAR_INDEX = (int) 'a';
     private static final int COUNT_ARRAY_SIZE = Alphabet.LATIN.getNumberOfChars();
 
@@ -11,7 +11,8 @@ class LatinCharCounter {
         this.string = string;
     }
 
-    CharCount countChars() {
+    @Override
+    public CharCount countChars() {
         countCharsToArray();
         return new CharCount(Alphabet.LATIN, charCountArray);
     }
