@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-final class Alphabet {
+public final class Alphabet {
     static final Alphabet LATIN = ofRange('a', 'z');
     private final char[] chars;
 

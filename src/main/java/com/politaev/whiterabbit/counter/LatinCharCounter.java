@@ -40,4 +40,9 @@ class LatinCharCounter implements CharCounter {
     private void incrementCharCount(int charIndexInArray) {
         charCountArray[charIndexInArray]++;
     }
+
+    @Override
+    public Alphabet getAlphabet() {
+        return Alphabet.LATIN;
+    }
 }
