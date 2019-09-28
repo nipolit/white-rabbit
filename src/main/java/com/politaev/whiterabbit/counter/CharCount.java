@@ -62,7 +62,7 @@ public final class CharCount {
                 .allMatch(i -> countOfEveryChar[i] >= otherCountingArray[i]);
     }
 
-    public CharCount compress(AlphabetCompression alphabetCompression) {
+    CharCount compress(AlphabetCompression alphabetCompression) {
         requireSuitableAlphabetCompression(alphabetCompression);
         int[] compressedCountingArray = compressCountingArray(alphabetCompression);
         return new CharCount(alphabetCompression.getTargetAlphabet(), compressedCountingArray);

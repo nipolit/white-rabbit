@@ -8,12 +8,12 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class AlphabetCompression {
+class AlphabetCompression {
     private final Alphabet sourceAlphabet;
     private final Alphabet targetAlphabet;
     private final int[] compressionArray;
 
-    public AlphabetCompression(Alphabet sourceAlphabet, Alphabet targetAlphabet, int[] compressionArray) {
+    private AlphabetCompression(Alphabet sourceAlphabet, Alphabet targetAlphabet, int[] compressionArray) {
         this.sourceAlphabet = sourceAlphabet;
         this.targetAlphabet = targetAlphabet;
         this.compressionArray = compressionArray;
@@ -28,7 +28,7 @@ public class AlphabetCompression {
         return sourceAlphabet;
     }
 
-    public Alphabet getTargetAlphabet() {
+    Alphabet getTargetAlphabet() {
         return targetAlphabet;
     }
 
