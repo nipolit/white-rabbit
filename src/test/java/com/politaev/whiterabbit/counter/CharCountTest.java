@@ -131,4 +131,14 @@ public class CharCountTest {
         CharCount charCount = countLatinChars(string).compress(alphabetCompression);
         assertEquals(targetAlphabet, charCount.getAlphabet());
     }
+
+    @Test
+    public void testCompressNotChangesState() {
+        String string = "abaca";
+        CharCount initialCharCount = countLatinChars(string);
+        Alphabet targetAlphabet = Alphabet.ofChars(new char[]{'a', 'b', 'c'});
+        AlphabetCompression alphabetCompression = AlphabetCompression.from(LATIN).to(targetAlphabet);
+        initialCharCount.compress(alphabetCompression);
+        assertEquals(countLatinChars(string), initialCharCount);
+    }
 }
