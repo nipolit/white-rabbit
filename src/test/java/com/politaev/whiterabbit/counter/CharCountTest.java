@@ -40,28 +40,27 @@ public class CharCountTest {
     public void testAddCharCountWithDifferentAlphabet() {
         String string1 = "dumbledore", string2 = "gandalf";
         CharCount latinCharCount = countLatinChars(string1);
-        CharCount customCharCount = countUsingCustomAlphabet(string2, 'a', 'd', 'f', 'g', 'l', 'n');
+        CharCount customCharCount = countAlphabetSubset(string2, 'a', 'd', 'f', 'g', 'l', 'n');
         latinCharCount.add(customCharCount);
     }
 
-    private CharCount countUsingCustomAlphabet(String string, char... customAlphabetChars) {
-        AlphabetCompression alphabetCompression = fromLatinToCustom(customAlphabetChars);
-        return countLatinChars(string).compress(alphabetCompression);
+    private CharCount countAlphabetSubset(String string, char... latinAlphabetSubset) {
+        CharCounter charCounter = alphabetSubsetCharCounter(latinAlphabetSubset);
+        return charCounter.countChars(string);
     }
 
-    private AlphabetCompression fromLatinToCustom(char... customAlphabetChars) {
-        Alphabet customAlphabet = Alphabet.ofChars(customAlphabetChars);
-        return AlphabetCompression.from(LATIN).to(customAlphabet);
+    private CharCounter alphabetSubsetCharCounter(char... latinAlphabetSubset) {
+        return AlphabetSubsetCharCounter.of(latinCharCounter, latinAlphabetSubset);
     }
 
     @Test
     public void testAddCharCountWithCustomAlphabet() {
         String string1 = "gandalf", string2 = "saruman";
-        AlphabetCompression alphabetCompression = fromLatinToCustom('a', 'd', 'f', 'g', 'l', 'm', 'n', 'r', 's', 'u');
-        CharCount charCount1 = countLatinChars(string1).compress(alphabetCompression);
-        CharCount charCount2 = countLatinChars(string2).compress(alphabetCompression);
+        CharCounter alphabetSubsetCharCounter = alphabetSubsetCharCounter('a', 'd', 'f', 'g', 'l', 'm', 'n', 'r', 's', 'u');
+        CharCount charCount1 = alphabetSubsetCharCounter.countChars(string1);
+        CharCount charCount2 = alphabetSubsetCharCounter.countChars(string2);
         CharCount actualSum = charCount1.add(charCount2);
-        CharCount expectedSum = countLatinChars(string1 + string2).compress(alphabetCompression);
+        CharCount expectedSum = alphabetSubsetCharCounter.countChars(string1 + string2);
         assertEquals(expectedSum, actualSum);
     }
 
@@ -87,18 +86,18 @@ public class CharCountTest {
     public void testSubtractCharCountWithDifferentAlphabet() {
         String string1 = "mortalkombat", string2 = "chunli";
         CharCount latinCharCount = countLatinChars(string1);
-        CharCount customCharCount = countUsingCustomAlphabet(string2, 'c', 'h', 'i', 'l', 'n', 'u');
+        CharCount customCharCount = countAlphabetSubset(string2, 'c', 'h', 'i', 'l', 'n', 'u');
         latinCharCount.subtract(customCharCount);
     }
 
     @Test
     public void testSubtractCharCountWithCustomAlphabet() {
         String string1 = "mortalkombat", string2 = "motaro";
-        AlphabetCompression alphabetCompression = fromLatinToCustom('a', 'b', 'k', 'l', 'm', 'o', 'r', 't');
-        CharCount charCount1 = countLatinChars(string1).compress(alphabetCompression);
-        CharCount charCount2 = countLatinChars(string2).compress(alphabetCompression);
+        CharCounter alphabetSubsetCharCounter = alphabetSubsetCharCounter('a', 'b', 'k', 'l', 'm', 'o', 'r', 't');
+        CharCount charCount1 = alphabetSubsetCharCounter.countChars(string1);
+        CharCount charCount2 = alphabetSubsetCharCounter.countChars(string2);
         CharCount actualDiff = charCount1.subtract(charCount2);
-        CharCount expectedDiff = countLatinChars("lkmbat").compress(alphabetCompression);
+        CharCount expectedDiff = alphabetSubsetCharCounter.countChars("lkmbat");
         assertEquals(expectedDiff, actualDiff);
     }
 
@@ -122,16 +121,16 @@ public class CharCountTest {
     public void testIncludesCharCountWithDifferentAlphabet() {
         String string1 = "baratheon", string2 = "batman";
         CharCount latinCharCount = countLatinChars(string1);
-        CharCount customCharCount = countUsingCustomAlphabet(string2, 'a', 'b', 'e', 'h', 'n', 'o', 'r', 't');
+        CharCount customCharCount = countAlphabetSubset(string2, 'a', 'b', 'e', 'h', 'n', 'o', 'r', 't');
         latinCharCount.subtract(customCharCount);
     }
 
     @Test
     public void testIncludesCharCountWithCustomAlphabet() {
         String string1 = "baratheon", string2 = "robert";
-        AlphabetCompression alphabetCompression = fromLatinToCustom('a', 'b', 'e', 'h', 'n', 'o', 'r', 't');
-        CharCount charCount1 = countLatinChars(string1).compress(alphabetCompression);
-        CharCount charCount2 = countLatinChars(string2).compress(alphabetCompression);
+        CharCounter alphabetSubsetCharCounter = alphabetSubsetCharCounter('a', 'b', 'e', 'h', 'n', 'o', 'r', 't');
+        CharCount charCount1 = alphabetSubsetCharCounter.countChars(string1);
+        CharCount charCount2 = alphabetSubsetCharCounter.countChars(string2);
         assertFalse(charCount1.includes(charCount2));
     }
 
@@ -153,6 +152,11 @@ public class CharCountTest {
         assertEquals(countLatinChars(string), initialCharCount);
     }
 
+    private AlphabetCompression fromLatinToCustom(char... customAlphabetChars) {
+        Alphabet customAlphabet = Alphabet.ofChars(customAlphabetChars);
+        return AlphabetCompression.from(LATIN).to(customAlphabet);
+    }
+
     @Test
     public void testCharCountTotalChars() {
         String string = "nebuchadnezzar";
@@ -164,7 +168,7 @@ public class CharCountTest {
     @Test
     public void testCharCountTotalCharsWithCustomAlphabet() {
         String string = "nebuchadnezzar";
-        CharCount charCount = countUsingCustomAlphabet(string, 'a', 'b', 'c', 'd', 'e', 'h', 'n', 'r', 'u', 'z');
+        CharCount charCount = countAlphabetSubset(string, 'a', 'b', 'c', 'd', 'e', 'h', 'n', 'r', 'u', 'z');
         int expectedTotalChars = string.length();
         assertEquals(expectedTotalChars, charCount.totalChars());
     }
