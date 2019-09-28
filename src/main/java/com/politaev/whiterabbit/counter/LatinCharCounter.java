@@ -4,25 +4,41 @@ class LatinCharCounter implements CharCounter {
     private static final int ARRAY_ZERO_ELEMENT_CHAR_INDEX = (int) 'a';
     private static final int COUNT_ARRAY_SIZE = Alphabet.LATIN.getNumberOfChars();
 
-    private final String string;
-    private int[] charCountArray;
-
-    LatinCharCounter(String string) {
-        this.string = string;
-    }
-
     @Override
-    public CharCount countChars() {
-        countCharsToArray();
+    public CharCount countChars(String string) {
+        int[] charCountArray = buildCharCountArray(string);
         return new CharCount(Alphabet.LATIN, charCountArray);
     }
 
-    private void countCharsToArray() {
-        charCountArray = initCharCountArray();
-        string.chars()
-                .map(this::charIndexToArrayIndex)
-                .filter(this::indexWithinArray)
-                .forEach(this::incrementCharCount);
+    private int[] buildCharCountArray(String string) {
+        CharCountArrayBuilder charCountArrayBuilder = new CharCountArrayBuilder(string);
+        return charCountArrayBuilder.build();
+    }
+
+    private class CharCountArrayBuilder {
+        private final String string;
+        private int[] charCountArray;
+
+        private CharCountArrayBuilder(String string) {
+            this.string = string;
+        }
+
+        int[] build() {
+            countCharsToArray();
+            return charCountArray;
+        }
+
+        private void countCharsToArray() {
+            charCountArray = initCharCountArray();
+            string.chars()
+                    .map(LatinCharCounter.this::charIndexToArrayIndex)
+                    .filter(LatinCharCounter.this::indexWithinArray)
+                    .forEach(this::incrementCharCount);
+        }
+
+        private void incrementCharCount(int charIndexInArray) {
+            charCountArray[charIndexInArray]++;
+        }
     }
 
     private int[] initCharCountArray() {
@@ -35,10 +51,6 @@ class LatinCharCounter implements CharCounter {
 
     private boolean indexWithinArray(int index) {
         return index >= 0 && index < COUNT_ARRAY_SIZE;
-    }
-
-    private void incrementCharCount(int charIndexInArray) {
-        charCountArray[charIndexInArray]++;
     }
 
     @Override

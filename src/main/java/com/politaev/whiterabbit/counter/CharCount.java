@@ -8,11 +8,6 @@ public final class CharCount {
     private final Alphabet alphabet;
     private final int[] countOfEveryChar;
 
-    public static CharCount countLatinChars(String string) {
-        LatinCharCounter latinCharCounter = new LatinCharCounter(string);
-        return latinCharCounter.countChars();
-    }
-
     CharCount(Alphabet alphabet, int[] countOfEveryChar) {
         this.alphabet = alphabet;
         this.countOfEveryChar = countOfEveryChar;

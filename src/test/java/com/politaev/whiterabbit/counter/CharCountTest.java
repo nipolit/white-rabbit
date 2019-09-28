@@ -1,12 +1,23 @@
 package com.politaev.whiterabbit.counter;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import static com.politaev.whiterabbit.counter.Alphabet.LATIN;
-import static com.politaev.whiterabbit.counter.CharCount.countLatinChars;
 import static org.junit.Assert.*;
 
 public class CharCountTest {
+    private LatinCharCounter latinCharCounter;
+
+    @Before
+    public void setUp() {
+        latinCharCounter = new LatinCharCounter();
+    }
+
+    private CharCount countLatinChars(String string) {
+        return latinCharCounter.countChars(string);
+    }
+
     @Test
     public void testCharCountSum() {
         String string1 = "benedict", string2 = "cumberbatch";

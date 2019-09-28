@@ -1,14 +1,21 @@
 package com.politaev.whiterabbit.counter;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 public class LatinCharCounterTest {
+    private LatinCharCounter latinCharCounter;
+
+    @Before
+    public void setUp() {
+        latinCharCounter = new LatinCharCounter();
+    }
+
     private CharCount countChars(String string) {
-        LatinCharCounter charCounter = new LatinCharCounter(string);
-        return charCounter.countChars();
+        return latinCharCounter.countChars(string);
     }
 
     @Test
