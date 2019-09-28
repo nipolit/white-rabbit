@@ -6,43 +6,33 @@ public class LatinCharCounter implements CharCounter {
 
     @Override
     public CharCount countChars(String string) {
-        int[] charCountArray = buildCharCountArray(string);
+        int[] charCountArray = countCharsToArray(string);
         return new CharCount(Alphabet.LATIN, charCountArray);
     }
 
-    private int[] buildCharCountArray(String string) {
-        CharCountArrayBuilder charCountArrayBuilder = new CharCountArrayBuilder(string);
-        return charCountArrayBuilder.build();
+    private int[] countCharsToArray(String string) {
+        CharCountArrayBuilder arrayBuilder = new CharCountArrayBuilder();
+        string.chars()
+                .map(LatinCharCounter.this::charIndexToArrayIndex)
+                .filter(LatinCharCounter.this::indexWithinArray)
+                .forEach(arrayBuilder::incrementCharCount);
+        return arrayBuilder.result();
     }
 
     private class CharCountArrayBuilder {
-        private final String string;
-        private int[] charCountArray;
+        private int[] charCountArray = initCharCountArray();
 
-        private CharCountArrayBuilder(String string) {
-            this.string = string;
+        private int[] initCharCountArray() {
+            return new int[COUNT_ARRAY_SIZE];
         }
 
-        int[] build() {
-            countCharsToArray();
-            return charCountArray;
-        }
-
-        private void countCharsToArray() {
-            charCountArray = initCharCountArray();
-            string.chars()
-                    .map(LatinCharCounter.this::charIndexToArrayIndex)
-                    .filter(LatinCharCounter.this::indexWithinArray)
-                    .forEach(this::incrementCharCount);
-        }
-
-        private void incrementCharCount(int charIndexInArray) {
+        void incrementCharCount(int charIndexInArray) {
             charCountArray[charIndexInArray]++;
         }
-    }
 
-    private int[] initCharCountArray() {
-        return new int[COUNT_ARRAY_SIZE];
+        int[] result() {
+            return charCountArray;
+        }
     }
 
     private int charIndexToArrayIndex(int charIndex) {
