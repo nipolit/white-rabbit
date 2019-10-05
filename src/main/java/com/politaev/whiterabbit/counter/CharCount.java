@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.IntStream;
 
-public final class CharCount {
+public final class CharCount implements Comparable<CharCount> {
     private final Alphabet alphabet;
     private final int[] countOfEveryChar;
 
@@ -100,5 +100,27 @@ public final class CharCount {
     @Override
     public int hashCode() {
         return Arrays.hashCode(countOfEveryChar);
+    }
+
+    @Override
+    public int compareTo(CharCount other) {
+        requireEqualAlphabets(other.alphabet, "Only CharCounts with equal alphabets can be compared");
+        int result = Integer.compare(totalChars(), other.totalChars());
+        if (result != 0) return result;
+        return compareCountingArrays(other.countOfEveryChar);
+    }
+
+    private int compareCountingArrays(int[] otherCountingArray) {
+        for (int i = 0; i < countOfEveryChar.length; i++) {
+            int result = -Integer.compare(countOfEveryChar[i], otherCountingArray[i]);
+            if (result != 0) return result;
+        }
+        return 0;
+    }
+
+    public static CharCount max(CharCount charCount1, CharCount charCount2) {
+        Objects.requireNonNull(charCount1);
+        Objects.requireNonNull(charCount2);
+        return (charCount1.compareTo(charCount2) < 0) ? charCount2 : charCount1;
     }
 }
