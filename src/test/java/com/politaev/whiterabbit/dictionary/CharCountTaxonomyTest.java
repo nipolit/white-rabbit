@@ -14,7 +14,8 @@ public class CharCountTaxonomyTest {
     private static final String[] WORDS = new String[]{
             "a", "b",
             "aa", "ab", "bb",
-            "aaa", "aab", "abb", "bbb"
+            "aaa", "aab", "abb", "bbb",
+            "aaaa", "aaab", "aabb", "abbb", "bbbb"
     };
     private CharCountTaxonomy taxonomy;
     private CharCounter charCounter;
@@ -47,13 +48,24 @@ public class CharCountTaxonomyTest {
     @Test
     public void testStreamCharCountsFromSomeCharCount() {
         CharCount from = charCounter.countChars("b");
-        long charCountsStreamed = taxonomy.charCountsOfLimitedTotalCharsStartingFromElement(from, 2).count();
+        long charCountsStreamed = taxonomy.charCountsFromElementToTotalChars(from, 2).count();
         assertEquals(4, charCountsStreamed);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testStreamSubsetOfCharCountsWithIncorrectBoundaries() {
         CharCount from = charCounter.countChars("aab");
-        taxonomy.charCountsOfLimitedTotalCharsStartingFromElement(from, 2);
+        taxonomy.charCountsFromElementToTotalChars(from, 2);
+    }
+
+    @Test
+    public void testStreamCharCountsBetweenTotalChars() {
+        long charCountsStreamed = taxonomy.charCountsFromTotalCharsToTotalChars(2, 3).count();
+        assertEquals(7, charCountsStreamed);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testStreamCharCountsBetweenTotalCharsWithIncorrectBoundaries() {
+        taxonomy.charCountsFromTotalCharsToTotalChars(3, 2);
     }
 }
