@@ -24,6 +24,10 @@ public class Combination<T extends Comparable> {
         return new Combination<>(extendedElements);
     }
 
+    T[] getElements() {
+        return elements;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
