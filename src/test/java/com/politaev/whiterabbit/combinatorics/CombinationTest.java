@@ -2,6 +2,10 @@ package com.politaev.whiterabbit.combinatorics;
 
 import org.junit.Test;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.fest.assertions.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
@@ -51,6 +55,14 @@ public class CombinationTest {
     public void testGetElementOutOfBounds() {
         Combination<Integer> c = new Combination<>(1, 2, 3, 4, 5, 6, 7);
         c.get(10);
+    }
+
+    @Test
+    public void testStreamElements() {
+        Integer[] elements = new Integer[]{1, 2, 3, 4, 5, 6, 7};
+        Combination<Integer> c = new Combination<>(elements);
+        List<Integer> streamedElements = c.elements().collect(Collectors.toList());
+        assertThat(streamedElements).containsExactly((Object[]) elements);
     }
 
     @Test

@@ -1,6 +1,7 @@
 package com.politaev.whiterabbit.combinatorics;
 
 import java.util.Arrays;
+import java.util.stream.Stream;
 
 public class Combination<T extends Comparable> {
     private final T[] elements;
@@ -22,6 +23,10 @@ public class Combination<T extends Comparable> {
         T[] extendedElements = Arrays.copyOf(elements, elements.length + 1);
         extendedElements[extendedElements.length - 1] = element;
         return new Combination<>(extendedElements);
+    }
+
+    public Stream<T> elements() {
+        return Stream.of(elements);
     }
 
     T[] getElements() {
