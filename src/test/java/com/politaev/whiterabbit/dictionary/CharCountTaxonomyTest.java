@@ -6,19 +6,30 @@ import com.politaev.whiterabbit.counter.LatinCharCounter;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.junit.Assert.assertEquals;
+import static org.fest.assertions.Assertions.assertThat;
 
 public class CharCountTaxonomyTest {
-    private static final String[] WORDS = new String[]{
-            "a", "b",
-            "aa", "ab", "bb",
-            "aaa", "aab", "abb", "bbb",
-            "aaaa", "aaab", "aabb", "abbb", "bbbb"
-    };
+    private static final String[] WORDS_OF_LENGTH_1 = new String[]{"a", "b"};
+    private static final String[] WORDS_OF_LENGTH_2 = new String[]{"aa", "ab", "bb"};
+    private static final String[] WORDS_OF_LENGTH_3 = new String[]{"aaa", "aab", "abb", "bbb"};
+    private static final String[] WORDS_OF_LENGTH_4 = new String[]{"aaaa", "aaab", "aabb", "abbb", "bbbb"};
+    private static final String[] WORDS = concat(
+            WORDS_OF_LENGTH_1,
+            WORDS_OF_LENGTH_2,
+            WORDS_OF_LENGTH_3,
+            WORDS_OF_LENGTH_4);
     private CharCountTaxonomy taxonomy;
     private CharCounter charCounter;
+
+    private static String[] concat(String[]... arrays) {
+        return Stream.of(arrays)
+                .flatMap(Stream::of)
+                .toArray(String[]::new);
+    }
 
     @Before
     public void setUp() {
@@ -35,21 +46,31 @@ public class CharCountTaxonomyTest {
 
     @Test
     public void testStreamAllCharCounts() {
-        long charCountsStreamed = taxonomy.charCountsOfLimitedTotalChars(100).count();
-        assertEquals(WORDS.length, charCountsStreamed);
+        List<CharCount> streamedCharCounts = taxonomy.charCountsOfLimitedTotalChars(100).collect(Collectors.toList());
+        assertThat(streamedCharCounts).containsExactly(countChars(WORDS));
+    }
+
+    private Object[] countChars(String[] words) {
+        return Stream.of(words)
+                .map(charCounter::countChars)
+                .toArray(CharCount[]::new);
     }
 
     @Test
     public void testStreamCharCountsLimitedByTotalChars() {
-        long charCountsStreamed = taxonomy.charCountsOfLimitedTotalChars(2).count();
-        assertEquals(5, charCountsStreamed);
+        List<CharCount> streamedCharCounts = taxonomy.charCountsOfLimitedTotalChars(2).collect(Collectors.toList());
+        assertThat(streamedCharCounts).containsExactly(countChars(WORDS_OF_LENGTH_1, WORDS_OF_LENGTH_2));
+    }
+
+    private Object[] countChars(String[]... wordsArrays) {
+        return countChars(concat(wordsArrays));
     }
 
     @Test
     public void testStreamCharCountsFromSomeCharCount() {
         CharCount from = charCounter.countChars("b");
-        long charCountsStreamed = taxonomy.charCountsFromElementToTotalChars(from, 2).count();
-        assertEquals(4, charCountsStreamed);
+        List<CharCount> streamedCharCounts = taxonomy.charCountsFromElementToTotalChars(from, 2).collect(Collectors.toList());
+        assertThat(streamedCharCounts).containsExactly(countChars(new String[]{"b"}, WORDS_OF_LENGTH_2));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -60,8 +81,8 @@ public class CharCountTaxonomyTest {
 
     @Test
     public void testStreamCharCountsBetweenTotalChars() {
-        long charCountsStreamed = taxonomy.charCountsFromTotalCharsToTotalChars(2, 3).count();
-        assertEquals(7, charCountsStreamed);
+        List<CharCount> streamedCharCounts = taxonomy.charCountsFromTotalCharsToTotalChars(2, 3).collect(Collectors.toList());
+        assertThat(streamedCharCounts).containsExactly(countChars(WORDS_OF_LENGTH_2, WORDS_OF_LENGTH_3));
     }
 
     @Test(expected = IllegalArgumentException.class)
