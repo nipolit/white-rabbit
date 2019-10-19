@@ -79,4 +79,20 @@ public class CombinationTest {
         c2.add(4);
         assertEquals(c1, c2);
     }
+
+    @Test
+    public void testAddCombination() {
+        Combination<Integer> c1 = new Combination<>(1, 2, 3);
+        Combination<Integer> c2 = new Combination<>(1, 3);
+        Combination<Integer> c3 = c2.add(new Combination<>(2));
+        assertEquals(c1, c3);
+    }
+
+    @Test
+    public void testCombinationImmutableOnAddCombination() {
+        Combination<Integer> c1 = new Combination<>(1, 3);
+        Combination<Integer> c2 = new Combination<>(1, 3);
+        c2.add(new Combination<>(2));
+        assertEquals(c1, c2);
+    }
 }

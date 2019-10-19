@@ -25,6 +25,12 @@ public class Combination<T extends Comparable> {
         return new Combination<>(extendedElements);
     }
 
+    public Combination<T> add(Combination<T> otherCombination) {
+        T[] extendedElements = Arrays.copyOf(elements, elements.length + otherCombination.elements.length);
+        System.arraycopy(otherCombination.elements, 0, extendedElements, elements.length, otherCombination.elements.length);
+        return new Combination<>(extendedElements);
+    }
+
     public Stream<T> elements() {
         return Stream.of(elements);
     }
