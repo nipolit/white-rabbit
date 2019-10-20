@@ -10,14 +10,14 @@ import java.util.stream.Collectors;
 import static java.util.Arrays.asList;
 import static org.fest.assertions.Assertions.assertThat;
 
-public class OneToManySubstitutionResolverTest {
+public class OneToManySubstitutionFunctionResolverTest {
     @Test
     public void testAllSubstitutionCombinationsStreamed() {
         List<String> originalElements = asList("ab", "-", "123");
         Function<String, Collection<Character>> substitutionFunction = s -> s.chars()
                 .mapToObj(c -> (char) c)
                 .collect(Collectors.toList());
-        OneToManySubstitutionResolver<String, Character> substituteStringWithItsCharResolver = new OneToManySubstitutionResolver<>(originalElements, substitutionFunction);
+        OneToManySubstitutionFunctionResolver<String, Character> substituteStringWithItsCharResolver = new OneToManySubstitutionFunctionResolver<>(originalElements, substitutionFunction);
         List<List<Character>> allSubstitutions = substituteStringWithItsCharResolver.substitutedElementsLists().collect(Collectors.toList());
 
         assertThat(allSubstitutions).containsOnly(

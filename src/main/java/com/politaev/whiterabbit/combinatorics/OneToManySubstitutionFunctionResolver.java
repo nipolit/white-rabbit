@@ -10,11 +10,11 @@ import java.util.stream.Stream;
 
 import static org.paukov.combinatorics3.Generator.cartesianProduct;
 
-public class OneToManySubstitutionResolver<T, R> {
+public class OneToManySubstitutionFunctionResolver<T, R> {
     private final List<T> originalElements;
     private final Function<T, Collection<R>> substitutionFunction;
 
-    public OneToManySubstitutionResolver(List<T> originalElements, Function<T, Collection<R>> substitutionFunction) {
+    public OneToManySubstitutionFunctionResolver(List<T> originalElements, Function<T, Collection<R>> substitutionFunction) {
         this.originalElements = originalElements;
         this.substitutionFunction = substitutionFunction;
     }
