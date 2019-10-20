@@ -20,13 +20,13 @@ public class OneToManySubstitutionResolverTest {
         OneToManySubstitutionResolver<String, Character> substituteStringWithItsCharResolver = new OneToManySubstitutionResolver<>(originalElements, substitutionFunction);
         List<List<Character>> allSubstitutions = substituteStringWithItsCharResolver.substitutedElementsLists().collect(Collectors.toList());
 
-        assertThat(allSubstitutions).hasSize(6);
-        assertThat(allSubstitutions).contains(asList('a', '-', '1'));
-        assertThat(allSubstitutions).contains(asList('a', '-', '2'));
-        assertThat(allSubstitutions).contains(asList('a', '-', '3'));
-        assertThat(allSubstitutions).contains(asList('b', '-', '1'));
-        assertThat(allSubstitutions).contains(asList('b', '-', '2'));
-        assertThat(allSubstitutions).contains(asList('b', '-', '3'));
+        assertThat(allSubstitutions).containsOnly(
+                asList('a', '-', '1'),
+                asList('a', '-', '2'),
+                asList('a', '-', '3'),
+                asList('b', '-', '1'),
+                asList('b', '-', '2'),
+                asList('b', '-', '3'));
     }
 
 }
