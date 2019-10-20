@@ -11,6 +11,7 @@ import static java.util.Arrays.asList;
 import static org.fest.assertions.Assertions.assertThat;
 
 public class OneToManySubstitutionFunctionResolverTest {
+
     @Test
     public void testAllSubstitutionCombinationsStreamed() {
         List<String> originalElements = asList("ab", "-", "123");
@@ -28,5 +29,4 @@ public class OneToManySubstitutionFunctionResolverTest {
                 asList('b', '-', '2'),
                 asList('b', '-', '3'));
     }
-
 }
