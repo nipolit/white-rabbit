@@ -5,10 +5,8 @@ import com.politaev.whiterabbit.counter.CharCount;
 
 import java.util.Objects;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
-class CharCountCombination extends Combination<CharCount> {
-
+class CharCountCombination {
     private final Combination<CharCount> delegate;
     private final CharCount charCountSum;
 
@@ -36,35 +34,23 @@ class CharCountCombination extends Combination<CharCount> {
                 .reduce(first, CharCount::add);
     }
 
-    public CharCount getCharCountSum() {
+    CharCount getCharCountSum() {
         return charCountSum;
     }
 
-    public int getTotalChars() {
+    int getTotalChars() {
         return charCountSum.totalChars();
     }
 
-    public Combination<CharCount> unwrap() {
+    CharCount getCurrentLast() {
+        return delegate.get(delegate.size() - 1);
+    }
+
+    Combination<CharCount> unwrap() {
         return delegate;
     }
 
-    @Override
-    public int size() {
-        return delegate.size();
-    }
-
-    @Override
-    public CharCount get(int index) {
-        return delegate.get(index);
-    }
-
-    @Override
-    public Combination<CharCount> add(CharCount element) {
+    Combination<CharCount> add(CharCount element) {
         return delegate.add(element);
-    }
-
-    @Override
-    public Stream<CharCount> elements() {
-        return delegate.elements();
     }
 }

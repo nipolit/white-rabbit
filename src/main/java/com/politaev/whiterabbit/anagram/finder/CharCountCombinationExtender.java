@@ -31,10 +31,14 @@ class CharCountCombinationExtender {
 
     Stream<Combination<CharCount>> extend(Combination<CharCount> originalCombination) {
         CharCountCombination charCountCombination = wrap(originalCombination);
-        requireCombinationCompatibleWithBoundaries(charCountCombination);
-        AdditionFinder additionFinder = new AdditionFinder(charCountCombination);
+        return extend(charCountCombination);
+    }
+
+    Stream<Combination<CharCount>> extend(CharCountCombination originalCombination) {
+        requireCombinationCompatibleWithBoundaries(originalCombination);
+        AdditionFinder additionFinder = new AdditionFinder(originalCombination);
         return additionFinder.findAdditions()
-                .map(charCountCombination::add);
+                .map(originalCombination::add);
     }
 
     private void requireCombinationCompatibleWithBoundaries(CharCountCombination combination) {
@@ -113,16 +117,12 @@ class CharCountCombinationExtender {
             if (isThresholdEffectiveLowerBoundary()) {
                 return charCountTaxonomy.charCountsFromTotalCharsToTotalChars(additionTotalCharsThreshold, additionTotalCharsLimit);
             } else {
-                return charCountTaxonomy.charCountsFromElementToTotalChars(getCurrentLast(), additionTotalCharsLimit);
+                return charCountTaxonomy.charCountsFromElementToTotalChars(originalCombination.getCurrentLast(), additionTotalCharsLimit);
             }
         }
 
         private boolean isThresholdEffectiveLowerBoundary() {
-            return getCurrentLast().totalChars() < additionTotalCharsThreshold;
-        }
-
-        private CharCount getCurrentLast() {
-            return originalCombination.get(originalCombination.size() - 1);
+            return originalCombination.getCurrentLast().totalChars() < additionTotalCharsThreshold;
         }
 
         private Stream<CharCount> filterAdditionsIncludedInCharCountLimit(Stream<CharCount> additions) {
