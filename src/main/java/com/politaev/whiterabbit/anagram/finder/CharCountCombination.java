@@ -42,6 +42,10 @@ class CharCountCombination {
         return charCountSum.totalChars();
     }
 
+    CharCount getFirstElement() {
+        return delegate.get(0);
+    }
+
     CharCount getLastElement() {
         return delegate.get(delegate.size() - 1);
     }
