@@ -117,12 +117,12 @@ class CharCountCombinationExtender {
             if (isThresholdEffectiveLowerBoundary()) {
                 return charCountTaxonomy.charCountsFromTotalCharsToTotalChars(additionTotalCharsThreshold, additionTotalCharsLimit);
             } else {
-                return charCountTaxonomy.charCountsFromElementToTotalChars(originalCombination.getCurrentLast(), additionTotalCharsLimit);
+                return charCountTaxonomy.charCountsFromElementToTotalChars(originalCombination.getLastElement(), additionTotalCharsLimit);
             }
         }
 
         private boolean isThresholdEffectiveLowerBoundary() {
-            return originalCombination.getCurrentLast().totalChars() < additionTotalCharsThreshold;
+            return originalCombination.getLastElement().totalChars() < additionTotalCharsThreshold;
         }
 
         private Stream<CharCount> filterAdditionsIncludedInCharCountLimit(Stream<CharCount> additions) {

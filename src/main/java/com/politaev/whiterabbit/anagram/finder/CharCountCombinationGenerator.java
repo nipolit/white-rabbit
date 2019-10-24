@@ -76,7 +76,7 @@ class CharCountCombinationGenerator {
     }
 
     private boolean canBeExtended(CharCountCombination combination) {
-        return combination.getCurrentLast().totalChars() <= totalCharsLimit - combination.getTotalChars();
+        return combination.getLastElement().totalChars() <= totalCharsLimit - combination.getTotalChars();
     }
 
     interface AddDictionary {
