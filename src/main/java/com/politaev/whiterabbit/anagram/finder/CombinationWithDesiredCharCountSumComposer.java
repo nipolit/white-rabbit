@@ -5,6 +5,7 @@ import com.politaev.whiterabbit.counter.CharCount;
 
 import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collector;
 import java.util.stream.Stream;
 
 import static java.util.Collections.emptyNavigableMap;
@@ -12,31 +13,41 @@ import static java.util.stream.Collectors.*;
 
 public class CombinationWithDesiredCharCountSumComposer {
     private final CharCount desiredCharCountSum;
+    private final int combinationSizeLimit;
     private final Map<CharCount, NavigableMap<CharCount, Set<Combination<CharCount>>>> organizedAvailablePieces;
 
     static AddDesiredCharCountSum createCombinationComposer() {
         return desiredCharCountSum
+                -> combinationSizeLimit
                 -> availablePieces
-                -> new CombinationWithDesiredCharCountSumComposer(desiredCharCountSum, availablePieces);
+                -> new CombinationWithDesiredCharCountSumComposer(desiredCharCountSum, combinationSizeLimit, availablePieces);
     }
 
-    private CombinationWithDesiredCharCountSumComposer(CharCount desiredCharCountSum, Collection<CharCountCombination> availablePieces) {
+    private CombinationWithDesiredCharCountSumComposer(CharCount desiredCharCountSum, int combinationSizeLimit, Collection<CharCountCombination> availablePieces) {
         this.desiredCharCountSum = desiredCharCountSum;
-        this.organizedAvailablePieces = groupByCharCountSumAndFirstElement(availablePieces);
+        this.combinationSizeLimit = combinationSizeLimit;
+        this.organizedAvailablePieces = organizePieces(availablePieces);
     }
 
-    private Map<CharCount, NavigableMap<CharCount, Set<Combination<CharCount>>>> groupByCharCountSumAndFirstElement(Collection<CharCountCombination> availablePieces) {
+    private Map<CharCount, NavigableMap<CharCount, Set<Combination<CharCount>>>> organizePieces(Collection<CharCountCombination> availablePieces) {
         return availablePieces.stream()
-                .collect(
-                        groupingBy(
-                                CharCountCombination::getCharCountSum,
-                                groupingBy(
-                                        CharCountCombination::getFirstElement,
-                                        TreeMap::new,
-                                        mapping(CharCountCombination::unwrap, toSet())
-                                )
-                        )
-                );
+                .filter(this::pieceCanBeUsed)
+                .collect(groupingByCharCountSumAndFirstElement());
+    }
+
+    private boolean pieceCanBeUsed(CharCountCombination piece) {
+        return piece.size() < combinationSizeLimit;
+    }
+
+    private Collector<CharCountCombination, ?, Map<CharCount, NavigableMap<CharCount, Set<Combination<CharCount>>>>> groupingByCharCountSumAndFirstElement() {
+        return groupingBy(
+                CharCountCombination::getCharCountSum,
+                groupingBy(
+                        CharCountCombination::getFirstElement,
+                        TreeMap::new,
+                        mapping(CharCountCombination::unwrap, toSet())
+                )
+        );
     }
 
     Stream<Combination<CharCount>> composeStartingWithCombination(CharCountCombination charCountCombination) {
@@ -48,7 +59,8 @@ public class CombinationWithDesiredCharCountSumComposer {
         CharCount complementToDesiredCharCount = getComplementToDesiredCharCount(charCountCombination);
         NavigableMap<CharCount, Set<Combination<CharCount>>> fittingPartOfPieces = getPiecesWithCharCountSum(complementToDesiredCharCount)
                 .tailMap(charCountCombination.getLastElement(), true);
-        return streamFoundPieces(fittingPartOfPieces.values());
+        return streamFoundPieces(fittingPartOfPieces.values())
+                .filter(fittingPiece -> charCountCombination.size() + fittingPiece.size() <= combinationSizeLimit);
     }
 
     private NavigableMap<CharCount, Set<Combination<CharCount>>> getPiecesWithCharCountSum(CharCount charCountSum) {
@@ -86,7 +98,11 @@ public class CombinationWithDesiredCharCountSumComposer {
     }
 
     interface AddDesiredCharCountSum {
-        AddAvailablePieces composingCombinationsWithSumEqualTo(CharCount desiredCharCountSum);
+        AddCombinationSizeLimit composingCombinationsWithSumEqualTo(CharCount desiredCharCountSum);
+    }
+
+    interface AddCombinationSizeLimit {
+        AddAvailablePieces andSizeLimitedBy(int combinationSizeLimit);
     }
 
     interface AddAvailablePieces {

@@ -3,9 +3,15 @@ package com.politaev.whiterabbit.anagram.finder;
 import com.politaev.whiterabbit.anagram.AnagramTest;
 import com.politaev.whiterabbit.combinatorics.Combination;
 import com.politaev.whiterabbit.counter.CharCount;
+import com.politaev.whiterabbit.util.AnnotationValueRule;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,6 +24,9 @@ import static org.fest.assertions.Assertions.assertThat;
 public class CombinationWithDesiredCharCountSumComposerTest extends AnagramTest {
 
     private CombinationWithDesiredCharCountSumComposer combinationComposer;
+
+    @Rule
+    public AnnotationValueRule<SizeLimit, Integer> sizeLimit = new AnnotationValueRule<>(SizeLimit.class, 6);
 
     @Override
     @Before
@@ -37,6 +46,7 @@ public class CombinationWithDesiredCharCountSumComposerTest extends AnagramTest 
         );
         combinationComposer = createCombinationComposer()
                 .composingCombinationsWithSumEqualTo(desiredCharCountSum)
+                .andSizeLimitedBy(sizeLimit.getValue())
                 .bySelectingAdditionsFrom(availablePieces);
     }
 
@@ -67,6 +77,26 @@ public class CombinationWithDesiredCharCountSumComposerTest extends AnagramTest 
     }
 
     @Test
+    @SizeLimit(4)
+    public void testComposeStartingWithCombinationLimitSize() {
+        Combination<CharCount> combination = charCountCombinationOf("a", "a", "b");
+        List<Combination<CharCount>> streamedCombinations = combinationComposer.composeStartingWithCombination(wrap(combination))
+                .collect(Collectors.toList());
+        assertThat(streamedCombinations).containsOnly(
+                charCountCombinationOf("a", "a", "b", "abb")
+        );
+    }
+
+    @Test
+    @SizeLimit(3)
+    public void testComposeStartingWithCombinationLimitSizeNoResult() {
+        Combination<CharCount> combination = charCountCombinationOf("a", "a", "b");
+        List<Combination<CharCount>> streamedCombinations = combinationComposer.composeStartingWithCombination(wrap(combination))
+                .collect(Collectors.toList());
+        assertThat(streamedCombinations).isEmpty();
+    }
+
+    @Test
     public void testComposeEndingWithCharCount() {
         CharCount charCount = charCounter.countChars("aabb");
         List<Combination<CharCount>> streamedCombinations = combinationComposer.composeEndingWithCharCount(charCount)
@@ -83,5 +113,31 @@ public class CombinationWithDesiredCharCountSumComposerTest extends AnagramTest 
         List<Combination<CharCount>> streamedCombinations = combinationComposer.composeEndingWithCharCount(charCount)
                 .collect(Collectors.toList());
         assertThat(streamedCombinations).isEmpty();
+    }
+
+    @Test
+    @SizeLimit(2)
+    public void testComposeEndingWithCharCountLimitSize() {
+        CharCount charCount = charCounter.countChars("aabb");
+        List<Combination<CharCount>> streamedCombinations = combinationComposer.composeEndingWithCharCount(charCount)
+                .collect(Collectors.toList());
+        assertThat(streamedCombinations).containsOnly(
+                charCountCombinationOf("ab", "aabb")
+        );
+    }
+
+    @Test
+    @SizeLimit(1)
+    public void testComposeEndingWithCharCountLimitSizeNoResult() {
+        CharCount charCount = charCounter.countChars("aabb");
+        List<Combination<CharCount>> streamedCombinations = combinationComposer.composeEndingWithCharCount(charCount)
+                .collect(Collectors.toList());
+        assertThat(streamedCombinations).isEmpty();
+    }
+
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target({ElementType.METHOD})
+    public @interface SizeLimit {
+        int value();
     }
 }
