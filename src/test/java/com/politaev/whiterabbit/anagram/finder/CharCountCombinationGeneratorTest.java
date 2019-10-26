@@ -18,6 +18,7 @@ public class CharCountCombinationGeneratorTest extends AnagramTest {
         CharCountCombinationGenerator generator = createGenerator()
                 .withDictionary(dictionary)
                 .withTotalCharsLimit(3)
+                .withCombinationSizeLimit(3)
                 .withCharCountLimit(charCountLimit);
         Set<CharCountCombination> generatedCombinations = generator.generateAllWithinLimits();
         Set<Combination<CharCount>> unwrappedCombinations = unwrapCombinations(generatedCombinations);
@@ -42,5 +43,30 @@ public class CharCountCombinationGeneratorTest extends AnagramTest {
         return wrapped.stream()
                 .map(CharCountCombination::unwrap)
                 .collect(Collectors.toSet());
+    }
+
+    @Test
+    public void testGeneratesAllCombinationsLimitWordCount() {
+        CharCount charCountLimit = charCounter.countChars("abbb");
+        CharCountCombinationGenerator generator = createGenerator()
+                .withDictionary(dictionary)
+                .withTotalCharsLimit(3)
+                .withCombinationSizeLimit(2)
+                .withCharCountLimit(charCountLimit);
+        Set<CharCountCombination> generatedCombinations = generator.generateAllWithinLimits();
+        Set<Combination<CharCount>> unwrappedCombinations = unwrapCombinations(generatedCombinations);
+        assertThat(unwrappedCombinations).containsOnly(
+                charCountCombinationOf("a"),
+                charCountCombinationOf("b"),
+                charCountCombinationOf("ab"),
+                charCountCombinationOf("bb"),
+                charCountCombinationOf("abb"),
+                charCountCombinationOf("bbb"),
+                charCountCombinationOf("a", "b"),
+                charCountCombinationOf("b", "b"),
+                charCountCombinationOf("a", "bb"),
+                charCountCombinationOf("b", "ab"),
+                charCountCombinationOf("b", "bb")
+        );
     }
 }

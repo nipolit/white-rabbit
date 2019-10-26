@@ -17,21 +17,25 @@ import static java.util.Collections.unmodifiableSet;
 class CharCountCombinationGenerator {
     private final Dictionary dictionary;
     private final int totalCharsLimit;
+    private final int combinationSizeLimit;
     private final CharCount charCountLimit;
     private final CharCountCombinationExtender extender;
 
     static AddDictionary createGenerator() {
         return dictionary
                 -> totalCharsLimit
+                -> combinationSizeLimit
                 -> charCountLimit
-                -> new CharCountCombinationGenerator(dictionary, totalCharsLimit, charCountLimit);
+                -> new CharCountCombinationGenerator(dictionary, totalCharsLimit, combinationSizeLimit, charCountLimit);
     }
 
     private CharCountCombinationGenerator(Dictionary dictionary,
                                           int totalCharsLimit,
+                                          int combinationSizeLimit,
                                           CharCount charCountLimit) {
         this.dictionary = dictionary;
         this.totalCharsLimit = totalCharsLimit;
+        this.combinationSizeLimit = combinationSizeLimit;
         this.charCountLimit = charCountLimit;
         this.extender = initializeExtender();
     }
@@ -44,11 +48,11 @@ class CharCountCombinationGenerator {
     }
 
     Set<CharCountCombination> generateAllWithinLimits() {
-        Set<CharCountCombination> allCombinations = new HashSet<>();
         Set<CharCountCombination> generationStepResult = generateOneWordCombinations();
-        while (!generationStepResult.isEmpty()) {
-            allCombinations.addAll(generationStepResult);
+        Set<CharCountCombination> allCombinations = new HashSet<>(generationStepResult);
+        while (shouldContinueGeneration(generationStepResult)) {
             generationStepResult = extendCombinationsByOneWord(generationStepResult);
+            allCombinations.addAll(generationStepResult);
         }
         return unmodifiableSet(allCombinations);
     }
@@ -60,6 +64,12 @@ class CharCountCombinationGenerator {
                 .map(Combination<CharCount>::new)
                 .map(CharCountCombination::wrap)
                 .collect(Collectors.toSet());
+    }
+
+    private boolean shouldContinueGeneration(Set<CharCountCombination> generationStepResult) {
+        if (generationStepResult.isEmpty()) return false;
+        CharCountCombination combinationGeneratedAtStep = generationStepResult.iterator().next();
+        return combinationGeneratedAtStep.size() < combinationSizeLimit;
     }
 
     private Set<CharCountCombination> extendCombinationsByOneWord(Set<CharCountCombination> generatedOnPreviousStep) {
@@ -84,7 +94,11 @@ class CharCountCombinationGenerator {
     }
 
     interface AddTotalCharsLimit {
-        AddCharCountLimit withTotalCharsLimit(int totalCharsLimit);
+        AddCombinationSizeLimit withTotalCharsLimit(int totalCharsLimit);
+    }
+
+    interface AddCombinationSizeLimit {
+        AddCharCountLimit withCombinationSizeLimit(int combinationSizeLimit);
     }
 
     interface AddCharCountLimit {
