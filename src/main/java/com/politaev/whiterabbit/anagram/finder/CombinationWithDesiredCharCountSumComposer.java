@@ -4,7 +4,6 @@ import com.politaev.whiterabbit.combinatorics.Combination;
 import com.politaev.whiterabbit.counter.CharCount;
 
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 
@@ -77,8 +76,7 @@ public class CombinationWithDesiredCharCountSumComposer {
 
     private Stream<Combination<CharCount>> streamFoundPieces(Collection<Set<Combination<CharCount>>> foundPieces) {
         return foundPieces.stream()
-                .map(Collection::stream)
-                .flatMap(Function.identity());
+                .flatMap(Collection::stream);
     }
 
     Stream<Combination<CharCount>> composeEndingWithCharCount(CharCount charCount) {

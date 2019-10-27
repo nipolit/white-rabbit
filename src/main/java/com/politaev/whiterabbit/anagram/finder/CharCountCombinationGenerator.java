@@ -7,7 +7,6 @@ import com.politaev.whiterabbit.dictionary.Dictionary;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -74,8 +73,7 @@ class CharCountCombinationGenerator {
 
     private Set<CharCountCombination> extendCombinationsByOneWord(Set<CharCountCombination> generatedOnPreviousStep) {
         return streamCombinationsToBeExtended(generatedOnPreviousStep).parallel()
-                .map(extender::extend)
-                .flatMap(Function.identity())
+                .flatMap(extender::extend)
                 .map(CharCountCombination::wrap)
                 .collect(Collectors.toSet());
     }
