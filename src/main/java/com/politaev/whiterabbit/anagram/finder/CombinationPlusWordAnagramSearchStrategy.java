@@ -7,14 +7,13 @@ import com.politaev.whiterabbit.dictionary.Dictionary;
 
 import java.util.stream.Stream;
 
-class CombinationPlusWordAnagramSearchStrategy implements AnagramSearchStrategy {
+class CombinationPlusWordAnagramSearchStrategy extends AnagramSearchStrategy {
 
-    private final CharCount anagramCharCount;
     private final CharCountTaxonomy taxonomy;
     private final CombinationWithDesiredCharCountSumComposer anagramComposer;
 
     CombinationPlusWordAnagramSearchStrategy(CharCount anagramCharCount, Dictionary dictionary, CombinationWithDesiredCharCountSumComposer anagramComposer) {
-        this.anagramCharCount = anagramCharCount;
+        super(anagramCharCount);
         this.taxonomy = dictionary.getTaxonomy();
         this.anagramComposer = anagramComposer;
     }
@@ -29,10 +28,6 @@ class CombinationPlusWordAnagramSearchStrategy implements AnagramSearchStrategy 
         return anagramHasEvenLength() ?
                 anagramCharCount.totalChars() / 2 + 1
                 : anagramCharCount.totalChars() / 2;
-    }
-
-    private boolean anagramHasEvenLength() {
-        return anagramCharCount.totalChars() % 2 == 0;
     }
 
     private int wordLengthLimit() {

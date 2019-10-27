@@ -6,14 +6,13 @@ import com.politaev.whiterabbit.dictionary.Dictionary;
 
 import java.util.stream.Stream;
 
-class SingleWordAnagramSearchStrategy implements AnagramSearchStrategy {
+class SingleWordAnagramSearchStrategy extends AnagramSearchStrategy {
 
-    private final CharCount anagramCharCount;
     private final Dictionary dictionary;
 
     SingleWordAnagramSearchStrategy(CharCount anagramCharCount, Dictionary dictionary) {
+        super(anagramCharCount);
         this.dictionary = dictionary;
-        this.anagramCharCount = anagramCharCount;
     }
 
     @Override

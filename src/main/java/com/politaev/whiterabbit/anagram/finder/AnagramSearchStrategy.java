@@ -5,6 +5,17 @@ import com.politaev.whiterabbit.counter.CharCount;
 
 import java.util.stream.Stream;
 
-interface AnagramSearchStrategy {
-    Stream<Combination<CharCount>> search();
+abstract class AnagramSearchStrategy {
+
+    final CharCount anagramCharCount;
+
+    AnagramSearchStrategy(CharCount anagramCharCount) {
+        this.anagramCharCount = anagramCharCount;
+    }
+
+    abstract Stream<Combination<CharCount>> search();
+
+    boolean anagramHasEvenLength() {
+        return anagramCharCount.totalChars() % 2 == 0;
+    }
 }
