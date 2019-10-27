@@ -20,4 +20,12 @@ public class SingleWordAnagramSearchStrategyTest extends AnagramSearchStrategyTe
                 charCountCombinationOf("aabb")
         );
     }
+
+    @GivenPhrase("aaabbb")
+    @Test
+    public void testSearchNoResult() {
+        AnagramSearchStrategy singleWordSearchStrategy = new SingleWordAnagramSearchStrategy(givenPhraseCharCount, dictionary);
+        List<Combination<CharCount>> foundAnagrams = singleWordSearchStrategy.search().collect(Collectors.toList());
+        assertThat(foundAnagrams).isEmpty();
+    }
 }
