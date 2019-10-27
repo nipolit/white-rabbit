@@ -12,6 +12,10 @@ public class AnnotationValueRule<T extends Annotation, R> extends TestWatcher {
     private final R defaultValue;
     private R annotationValue;
 
+    public AnnotationValueRule(Class<T> annotationType) {
+        this(annotationType, null);
+    }
+
     public AnnotationValueRule(Class<T> annotationType, R defaultValue) {
         this.annotationType = annotationType;
         this.defaultValue = defaultValue;
