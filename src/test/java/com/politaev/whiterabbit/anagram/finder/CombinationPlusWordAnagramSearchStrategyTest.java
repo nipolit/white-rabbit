@@ -26,6 +26,23 @@ public class CombinationPlusWordAnagramSearchStrategyTest extends AnagramSearchS
         );
     }
 
+    @GivenPhrase("aaabb")
+    @Test
+    public void testSearchOddPhraseLength() {
+        AnagramSearchStrategy combinationPlusWordSearchStrategy = new CombinationPlusWordAnagramSearchStrategy(givenPhraseCharCount, dictionary, anagramComposer);
+        List<Combination<CharCount>> foundAnagrams = combinationPlusWordSearchStrategy.search().collect(Collectors.toList());
+        assertThat(foundAnagrams).containsOnly(
+                charCountCombinationOf("a", "a", "abb"),
+                charCountCombinationOf("a", "b", "aab"),
+                charCountCombinationOf("b", "b", "aaa"),
+                charCountCombinationOf("aa", "abb"),
+                charCountCombinationOf("ab", "aab"),
+                charCountCombinationOf("bb", "aaa"),
+                charCountCombinationOf("a", "aabb"),
+                charCountCombinationOf("b", "aaab")
+        );
+    }
+
     @GivenPhrase("aaabbb")
     @SizeLimit(2)
     @Test
