@@ -29,6 +29,10 @@ public class Dictionary {
         charCountTaxonomy.add(wordCharCount);
     }
 
+    public boolean containsWordsWithCharCount(CharCount charCount) {
+        return wordsByCharCount.containsKey(charCount);
+    }
+
     public Set<String> getWords(CharCount charCount) {
         Set<String> words = wordsByCharCount.getOrDefault(charCount, emptySet());
         return unmodifiableSet(words);
