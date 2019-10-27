@@ -8,7 +8,7 @@ public class CombinationPlusWordAnagramSearchStrategyTest extends AnagramSearchS
 
     @Override
     AnagramSearchStrategy createSearchStrategy() {
-        return new CombinationPlusWordAnagramSearchStrategy(givenPhraseCharCount, dictionary, anagramComposer);
+        return new CombinationPlusWordAnagramSearchStrategy(context);
     }
 
     @GivenPhrase("aaabbb")

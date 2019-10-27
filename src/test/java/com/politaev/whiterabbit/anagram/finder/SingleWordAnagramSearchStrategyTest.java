@@ -8,7 +8,7 @@ public class SingleWordAnagramSearchStrategyTest extends AnagramSearchStrategyTe
 
     @Override
     AnagramSearchStrategy createSearchStrategy() {
-        return new SingleWordAnagramSearchStrategy(givenPhraseCharCount, dictionary);
+        return new SingleWordAnagramSearchStrategy(context);
     }
 
     @GivenPhrase("aabb")

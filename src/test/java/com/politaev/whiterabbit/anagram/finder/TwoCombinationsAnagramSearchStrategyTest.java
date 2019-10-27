@@ -8,7 +8,7 @@ public class TwoCombinationsAnagramSearchStrategyTest extends AnagramSearchStrat
 
     @Override
     AnagramSearchStrategy createSearchStrategy() {
-        return new TwoCombinationsAnagramSearchStrategy(givenPhraseCharCount, combinationsNotOverHalfAnagramLength, anagramComposer);
+        return new TwoCombinationsAnagramSearchStrategy(context);
     }
 
     @GivenPhrase("aaabbb")

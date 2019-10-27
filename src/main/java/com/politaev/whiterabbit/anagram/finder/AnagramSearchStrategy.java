@@ -2,20 +2,42 @@ package com.politaev.whiterabbit.anagram.finder;
 
 import com.politaev.whiterabbit.combinatorics.Combination;
 import com.politaev.whiterabbit.counter.CharCount;
+import com.politaev.whiterabbit.dictionary.Dictionary;
 
+import java.util.Set;
 import java.util.stream.Stream;
 
 abstract class AnagramSearchStrategy {
 
-    final CharCount anagramCharCount;
+    private final AnagramSearchContext context;
 
-    AnagramSearchStrategy(CharCount anagramCharCount) {
-        this.anagramCharCount = anagramCharCount;
+    protected AnagramSearchStrategy(AnagramSearchContext context) {
+        this.context = context;
     }
 
     abstract Stream<Combination<CharCount>> search();
 
+    CharCount getAnagramCharCount() {
+        return context.getAnagramCharCount();
+    }
+
+    int getAnagramWordLimit() {
+        return context.getAnagramWordLimit();
+    }
+
+    Dictionary getDictionary() {
+        return context.getDictionary();
+    }
+
+    CombinationWithDesiredCharCountSumComposer getAnagramComposer() {
+        return context.getAnagramComposer();
+    }
+
+    Set<CharCountCombination> getCombinations() {
+        return context.getCombinations();
+    }
+
     boolean anagramHasEvenLength() {
-        return anagramCharCount.totalChars() % 2 == 0;
+        return getAnagramCharCount().totalChars() % 2 == 0;
     }
 }
