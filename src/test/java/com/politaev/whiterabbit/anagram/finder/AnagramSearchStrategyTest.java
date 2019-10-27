@@ -20,6 +20,7 @@ public abstract class AnagramSearchStrategyTest extends AnagramTest {
     public AnnotationValueRule<SizeLimit, Integer> sizeLimit = new AnnotationValueRule<>(SizeLimit.class);
 
     CharCount givenPhraseCharCount;
+    Set<CharCountCombination> combinationsNotOverHalfAnagramLength;
     CombinationWithDesiredCharCountSumComposer anagramComposer;
 
     @Override
@@ -27,6 +28,7 @@ public abstract class AnagramSearchStrategyTest extends AnagramTest {
     public void setUp() {
         super.setUp();
         givenPhraseCharCount = charCounter.countChars(givenPhrase.getValue());
+        combinationsNotOverHalfAnagramLength = computeCombinationsUnderHalfGivenPhraseLength();
         anagramComposer = createAnagramComposer();
     }
 
@@ -34,7 +36,7 @@ public abstract class AnagramSearchStrategyTest extends AnagramTest {
         return createCombinationComposer()
                 .composingCombinationsWithSumEqualTo(givenPhraseCharCount)
                 .andSizeLimitedBy(getSizeLimit())
-                .bySelectingAdditionsFrom(computeCombinationsUnderHalfGivenPhraseLength());
+                .bySelectingAdditionsFrom(combinationsNotOverHalfAnagramLength);
     }
 
     private int getSizeLimit() {
