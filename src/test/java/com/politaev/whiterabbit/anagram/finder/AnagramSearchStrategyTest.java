@@ -1,12 +1,15 @@
 package com.politaev.whiterabbit.anagram.finder;
 
 import com.politaev.whiterabbit.anagram.AnagramTest;
+import com.politaev.whiterabbit.combinatorics.Combination;
 import com.politaev.whiterabbit.counter.CharCount;
 import com.politaev.whiterabbit.util.AnnotationValueRule;
 import org.junit.Before;
 import org.junit.Rule;
 
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.politaev.whiterabbit.anagram.finder.CharCountCombinationGenerator.createGenerator;
 import static com.politaev.whiterabbit.anagram.finder.CombinationWithDesiredCharCountSumComposer.createCombinationComposer;
@@ -22,10 +25,17 @@ public abstract class AnagramSearchStrategyTest extends AnagramTest {
     CharCount givenPhraseCharCount;
     Set<CharCountCombination> combinationsNotOverHalfAnagramLength;
     CombinationWithDesiredCharCountSumComposer anagramComposer;
+    AnagramSearchStrategy searchStrategy;
+    List<Combination<CharCount>> foundAnagrams;
 
     @Override
     @Before
     public void setUp() {
+        initializeContext();
+        performSearch();
+    }
+
+    private void initializeContext() {
         super.setUp();
         givenPhraseCharCount = charCounter.countChars(givenPhrase.getValue());
         combinationsNotOverHalfAnagramLength = computeCombinationsUnderHalfGivenPhraseLength();
@@ -53,4 +63,11 @@ public abstract class AnagramSearchStrategyTest extends AnagramTest {
                 .withCharCountLimit(givenPhraseCharCount);
         return generator.generateAllWithinLimits();
     }
+
+    private void performSearch() {
+        searchStrategy = createSearchStrategy();
+        foundAnagrams = searchStrategy.search().collect(Collectors.toList());
+    }
+
+    abstract AnagramSearchStrategy createSearchStrategy();
 }

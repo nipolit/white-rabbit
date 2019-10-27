@@ -1,21 +1,19 @@
 package com.politaev.whiterabbit.anagram.finder;
 
-import com.politaev.whiterabbit.combinatorics.Combination;
-import com.politaev.whiterabbit.counter.CharCount;
 import org.junit.Test;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.fest.assertions.Assertions.assertThat;
 
 public class TwoCombinationsAnagramSearchStrategyTest extends AnagramSearchStrategyTest {
 
+    @Override
+    AnagramSearchStrategy createSearchStrategy() {
+        return new TwoCombinationsAnagramSearchStrategy(givenPhraseCharCount, combinationsNotOverHalfAnagramLength, anagramComposer);
+    }
+
     @GivenPhrase("aaabbb")
     @Test
     public void testSearch() {
-        AnagramSearchStrategy twoCombinationsSearchStrategy = new TwoCombinationsAnagramSearchStrategy(givenPhraseCharCount, combinationsNotOverHalfAnagramLength, anagramComposer);
-        List<Combination<CharCount>> foundAnagrams = twoCombinationsSearchStrategy.search().collect(Collectors.toList());
         assertThat(foundAnagrams).containsOnly(
                 charCountCombinationOf("a", "a", "a", "b", "b", "b"),
                 charCountCombinationOf("a", "b", "b", "b", "aa"),
@@ -40,8 +38,6 @@ public class TwoCombinationsAnagramSearchStrategyTest extends AnagramSearchStrat
     @SizeLimit(4)
     @Test
     public void testSearchLimitSize() {
-        AnagramSearchStrategy twoCombinationsSearchStrategy = new TwoCombinationsAnagramSearchStrategy(givenPhraseCharCount, combinationsNotOverHalfAnagramLength, anagramComposer);
-        List<Combination<CharCount>> foundAnagrams = twoCombinationsSearchStrategy.search().collect(Collectors.toList());
         assertThat(foundAnagrams).containsOnly(
                 charCountCombinationOf("a", "a", "a", "bbb"),
                 charCountCombinationOf("a", "a", "b", "abb"),
@@ -61,8 +57,6 @@ public class TwoCombinationsAnagramSearchStrategyTest extends AnagramSearchStrat
     @GivenPhrase("aaabb")
     @Test
     public void testSearchNoResult() {
-        AnagramSearchStrategy twoCombinationsSearchStrategy = new TwoCombinationsAnagramSearchStrategy(givenPhraseCharCount, combinationsNotOverHalfAnagramLength, anagramComposer);
-        List<Combination<CharCount>> foundAnagrams = twoCombinationsSearchStrategy.search().collect(Collectors.toList());
         assertThat(foundAnagrams).isEmpty();
     }
 }
