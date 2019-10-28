@@ -37,6 +37,10 @@ abstract class AnagramSearchStrategy {
         return context.getCombinations();
     }
 
+    AnagramSearchContext getContext() {
+        return context;
+    }
+
     boolean anagramHasEvenLength() {
         return getAnagramCharCount().totalChars() % 2 == 0;
     }
