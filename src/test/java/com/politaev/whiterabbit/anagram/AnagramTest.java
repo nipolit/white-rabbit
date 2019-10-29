@@ -10,7 +10,7 @@ import org.junit.Before;
 import java.util.stream.Stream;
 
 public abstract class AnagramTest {
-    protected static final String[] WORDS = new String[]{
+    private static final String[] WORDS = new String[]{
             "a", "b",
             "aa", "ab", "bb",
             "aaa", "aab", "abb", "bbb",
@@ -24,7 +24,7 @@ public abstract class AnagramTest {
     public void setUp() {
         charCounter = new LatinCharCounter();
         dictionary = new Dictionary(charCounter);
-        Stream.of(WORDS).forEach(dictionary::add);
+        Stream.of(getWords()).forEach(dictionary::add);
     }
 
     protected Combination<CharCount> charCountCombinationOf(String... words) {
@@ -32,5 +32,9 @@ public abstract class AnagramTest {
                 .map(charCounter::countChars)
                 .toArray(CharCount[]::new);
         return new Combination<>(wordCharCounts);
+    }
+
+    protected String[] getWords() {
+        return WORDS;
     }
 }
