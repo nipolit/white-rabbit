@@ -6,7 +6,7 @@ import com.politaev.whiterabbit.counter.CharCount;
 import java.util.Objects;
 import java.util.stream.IntStream;
 
-class CharCountCombination {
+final class CharCountCombination {
     private final Combination<CharCount> delegate;
     private final CharCount charCountSum;
 
@@ -58,7 +58,20 @@ class CharCountCombination {
         return delegate;
     }
 
-    Combination<CharCount> add(CharCount element) {
-        return delegate.add(element);
+    CharCountCombination add(CharCount element) {
+        return wrap(delegate.add(element));
+    }
+
+    @Override
+    public int hashCode() {
+        return delegate.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        if (other == null || getClass() != other.getClass()) return false;
+        CharCountCombination otherCharCountCombination = (CharCountCombination) other;
+        return Objects.equals(delegate, otherCharCountCombination.delegate);
     }
 }

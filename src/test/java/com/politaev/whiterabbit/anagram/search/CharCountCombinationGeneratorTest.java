@@ -8,6 +8,7 @@ import org.junit.Test;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.politaev.whiterabbit.anagram.search.CharCountCombination.wrap;
 import static com.politaev.whiterabbit.anagram.search.CharCountCombinationGenerator.createGenerator;
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -21,21 +22,20 @@ public class CharCountCombinationGeneratorTest extends AnagramTest {
                 .withCombinationSizeLimit(3)
                 .withCharCountLimit(charCountLimit);
         Set<CharCountCombination> generatedCombinations = generator.generateAllWithinLimits();
-        Set<Combination<CharCount>> unwrappedCombinations = unwrapCombinations(generatedCombinations);
-        assertThat(unwrappedCombinations).containsOnly(
-                charCountCombinationOf("a"),
-                charCountCombinationOf("b"),
-                charCountCombinationOf("ab"),
-                charCountCombinationOf("bb"),
-                charCountCombinationOf("abb"),
-                charCountCombinationOf("bbb"),
-                charCountCombinationOf("a", "b"),
-                charCountCombinationOf("b", "b"),
-                charCountCombinationOf("a", "bb"),
-                charCountCombinationOf("b", "ab"),
-                charCountCombinationOf("b", "bb"),
-                charCountCombinationOf("a", "b", "b"),
-                charCountCombinationOf("b", "b", "b")
+        assertThat(generatedCombinations).containsOnly(
+                wrap(charCountCombinationOf("a")),
+                wrap(charCountCombinationOf("b")),
+                wrap(charCountCombinationOf("ab")),
+                wrap(charCountCombinationOf("bb")),
+                wrap(charCountCombinationOf("abb")),
+                wrap(charCountCombinationOf("bbb")),
+                wrap(charCountCombinationOf("a", "b")),
+                wrap(charCountCombinationOf("b", "b")),
+                wrap(charCountCombinationOf("a", "bb")),
+                wrap(charCountCombinationOf("b", "ab")),
+                wrap(charCountCombinationOf("b", "bb")),
+                wrap(charCountCombinationOf("a", "b", "b")),
+                wrap(charCountCombinationOf("b", "b", "b"))
         );
     }
 
@@ -54,19 +54,18 @@ public class CharCountCombinationGeneratorTest extends AnagramTest {
                 .withCombinationSizeLimit(2)
                 .withCharCountLimit(charCountLimit);
         Set<CharCountCombination> generatedCombinations = generator.generateAllWithinLimits();
-        Set<Combination<CharCount>> unwrappedCombinations = unwrapCombinations(generatedCombinations);
-        assertThat(unwrappedCombinations).containsOnly(
-                charCountCombinationOf("a"),
-                charCountCombinationOf("b"),
-                charCountCombinationOf("ab"),
-                charCountCombinationOf("bb"),
-                charCountCombinationOf("abb"),
-                charCountCombinationOf("bbb"),
-                charCountCombinationOf("a", "b"),
-                charCountCombinationOf("b", "b"),
-                charCountCombinationOf("a", "bb"),
-                charCountCombinationOf("b", "ab"),
-                charCountCombinationOf("b", "bb")
+        assertThat(generatedCombinations).containsOnly(
+                wrap(charCountCombinationOf("a")),
+                wrap(charCountCombinationOf("b")),
+                wrap(charCountCombinationOf("ab")),
+                wrap(charCountCombinationOf("bb")),
+                wrap(charCountCombinationOf("abb")),
+                wrap(charCountCombinationOf("bbb")),
+                wrap(charCountCombinationOf("a", "b")),
+                wrap(charCountCombinationOf("b", "b")),
+                wrap(charCountCombinationOf("a", "bb")),
+                wrap(charCountCombinationOf("b", "ab")),
+                wrap(charCountCombinationOf("b", "bb"))
         );
     }
 }

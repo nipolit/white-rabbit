@@ -74,7 +74,6 @@ class CharCountCombinationGenerator {
     private Set<CharCountCombination> extendCombinationsByOneWord(Set<CharCountCombination> generatedOnPreviousStep) {
         return streamCombinationsToBeExtended(generatedOnPreviousStep).parallel()
                 .flatMap(extender::extend)
-                .map(CharCountCombination::wrap)
                 .collect(Collectors.toSet());
     }
 

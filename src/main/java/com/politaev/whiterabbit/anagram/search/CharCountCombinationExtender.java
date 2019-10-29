@@ -1,13 +1,10 @@
 package com.politaev.whiterabbit.anagram.search;
 
-import com.politaev.whiterabbit.combinatorics.Combination;
 import com.politaev.whiterabbit.counter.CharCount;
 import com.politaev.whiterabbit.dictionary.CharCountTaxonomy;
 import com.politaev.whiterabbit.dictionary.Dictionary;
 
 import java.util.stream.Stream;
-
-import static com.politaev.whiterabbit.anagram.search.CharCountCombination.wrap;
 
 class CharCountCombinationExtender {
     private final CharCountTaxonomy charCountTaxonomy;
@@ -29,12 +26,7 @@ class CharCountCombinationExtender {
         this.resultCharCountLimit = resultCharCountLimit;
     }
 
-    Stream<Combination<CharCount>> extend(Combination<CharCount> originalCombination) {
-        CharCountCombination charCountCombination = wrap(originalCombination);
-        return extend(charCountCombination);
-    }
-
-    Stream<Combination<CharCount>> extend(CharCountCombination originalCombination) {
+    Stream<CharCountCombination> extend(CharCountCombination originalCombination) {
         requireCombinationCompatibleWithBoundaries(originalCombination);
         AdditionFinder additionFinder = new AdditionFinder(originalCombination);
         return additionFinder.findAdditions()

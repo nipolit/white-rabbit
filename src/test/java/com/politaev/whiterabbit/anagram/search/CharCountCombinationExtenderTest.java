@@ -1,13 +1,13 @@
 package com.politaev.whiterabbit.anagram.search;
 
 import com.politaev.whiterabbit.anagram.AnagramTest;
-import com.politaev.whiterabbit.combinatorics.Combination;
 import com.politaev.whiterabbit.counter.CharCount;
 import org.junit.Test;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.politaev.whiterabbit.anagram.search.CharCountCombination.wrap;
 import static com.politaev.whiterabbit.anagram.search.CharCountCombinationExtender.createExtender;
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -18,13 +18,13 @@ public class CharCountCombinationExtenderTest extends AnagramTest {
     public void testNoRestrictions() {
         CharCountCombinationExtender combinationExtender = createExtender(dictionary)
                 .build();
-        Combination<CharCount> initialCombination = charCountCombinationOf("aa", "bb", "aaab");
-        List<Combination<CharCount>> extendedCombinations = combinationExtender.extend(initialCombination).collect(Collectors.toList());
+        CharCountCombination initialCombination = wrap(charCountCombinationOf("aa", "bb", "aaab"));
+        List<CharCountCombination> extendedCombinations = combinationExtender.extend(initialCombination).collect(Collectors.toList());
         assertThat(extendedCombinations).containsExactly(
-                charCountCombinationOf("aa", "bb", "aaab", "aaab"),
-                charCountCombinationOf("aa", "bb", "aaab", "aabb"),
-                charCountCombinationOf("aa", "bb", "aaab", "abbb"),
-                charCountCombinationOf("aa", "bb", "aaab", "bbbb")
+                wrap(charCountCombinationOf("aa", "bb", "aaab", "aaab")),
+                wrap(charCountCombinationOf("aa", "bb", "aaab", "aabb")),
+                wrap(charCountCombinationOf("aa", "bb", "aaab", "abbb")),
+                wrap(charCountCombinationOf("aa", "bb", "aaab", "bbbb"))
         );
     }
 
@@ -33,14 +33,14 @@ public class CharCountCombinationExtenderTest extends AnagramTest {
         CharCountCombinationExtender combinationExtender = createExtender(dictionary)
                 .withResultTotalCharsNotHigherThan(6)
                 .build();
-        Combination<CharCount> initialCombination = charCountCombinationOf("a", "bb");
-        List<Combination<CharCount>> extendedCombinations = combinationExtender.extend(initialCombination).collect(Collectors.toList());
+        CharCountCombination initialCombination = wrap(charCountCombinationOf("a", "bb"));
+        List<CharCountCombination> extendedCombinations = combinationExtender.extend(initialCombination).collect(Collectors.toList());
         assertThat(extendedCombinations).containsExactly(
-                charCountCombinationOf("a", "bb", "bb"),
-                charCountCombinationOf("a", "bb", "aaa"),
-                charCountCombinationOf("a", "bb", "aab"),
-                charCountCombinationOf("a", "bb", "abb"),
-                charCountCombinationOf("a", "bb", "bbb")
+                wrap(charCountCombinationOf("a", "bb", "bb")),
+                wrap(charCountCombinationOf("a", "bb", "aaa")),
+                wrap(charCountCombinationOf("a", "bb", "aab")),
+                wrap(charCountCombinationOf("a", "bb", "abb")),
+                wrap(charCountCombinationOf("a", "bb", "bbb"))
         );
     }
 
@@ -49,7 +49,7 @@ public class CharCountCombinationExtenderTest extends AnagramTest {
         CharCountCombinationExtender combinationExtender = createExtender(dictionary)
                 .withResultTotalCharsNotHigherThan(3)
                 .build();
-        combinationExtender.extend(charCountCombinationOf("a", "bb"));
+        combinationExtender.extend(wrap(charCountCombinationOf("a", "bb")));
     }
 
     @Test
@@ -57,18 +57,18 @@ public class CharCountCombinationExtenderTest extends AnagramTest {
         CharCountCombinationExtender combinationExtender = createExtender(dictionary)
                 .withResultTotalCharsNotLowerThan(4)
                 .build();
-        Combination<CharCount> initialCombination = charCountCombinationOf("a");
-        List<Combination<CharCount>> extendedCombinations = combinationExtender.extend(initialCombination).collect(Collectors.toList());
+        CharCountCombination initialCombination = wrap(charCountCombinationOf("a"));
+        List<CharCountCombination> extendedCombinations = combinationExtender.extend(initialCombination).collect(Collectors.toList());
         assertThat(extendedCombinations).containsExactly(
-                charCountCombinationOf("a", "aaa"),
-                charCountCombinationOf("a", "aab"),
-                charCountCombinationOf("a", "abb"),
-                charCountCombinationOf("a", "bbb"),
-                charCountCombinationOf("a", "aaaa"),
-                charCountCombinationOf("a", "aaab"),
-                charCountCombinationOf("a", "aabb"),
-                charCountCombinationOf("a", "abbb"),
-                charCountCombinationOf("a", "bbbb")
+                wrap(charCountCombinationOf("a", "aaa")),
+                wrap(charCountCombinationOf("a", "aab")),
+                wrap(charCountCombinationOf("a", "abb")),
+                wrap(charCountCombinationOf("a", "bbb")),
+                wrap(charCountCombinationOf("a", "aaaa")),
+                wrap(charCountCombinationOf("a", "aaab")),
+                wrap(charCountCombinationOf("a", "aabb")),
+                wrap(charCountCombinationOf("a", "abbb")),
+                wrap(charCountCombinationOf("a", "bbbb"))
         );
     }
 
@@ -77,7 +77,7 @@ public class CharCountCombinationExtenderTest extends AnagramTest {
         CharCountCombinationExtender combinationExtender = createExtender(dictionary)
                 .withResultTotalCharsNotLowerThan(2)
                 .build();
-        combinationExtender.extend(charCountCombinationOf("a", "bb"));
+        combinationExtender.extend(wrap(charCountCombinationOf("a", "bb")));
     }
 
     @Test
@@ -85,13 +85,13 @@ public class CharCountCombinationExtenderTest extends AnagramTest {
         CharCountCombinationExtender combinationExtender = createExtender(dictionary)
                 .withExpectedTotalChars(4)
                 .build();
-        Combination<CharCount> initialCombination = charCountCombinationOf("a");
-        List<Combination<CharCount>> extendedCombinations = combinationExtender.extend(initialCombination).collect(Collectors.toList());
+        CharCountCombination initialCombination = wrap(charCountCombinationOf("a"));
+        List<CharCountCombination> extendedCombinations = combinationExtender.extend(initialCombination).collect(Collectors.toList());
         assertThat(extendedCombinations).containsExactly(
-                charCountCombinationOf("a", "aaa"),
-                charCountCombinationOf("a", "aab"),
-                charCountCombinationOf("a", "abb"),
-                charCountCombinationOf("a", "bbb")
+                wrap(charCountCombinationOf("a", "aaa")),
+                wrap(charCountCombinationOf("a", "aab")),
+                wrap(charCountCombinationOf("a", "abb")),
+                wrap(charCountCombinationOf("a", "bbb"))
         );
     }
 
@@ -100,7 +100,7 @@ public class CharCountCombinationExtenderTest extends AnagramTest {
         CharCountCombinationExtender combinationExtender = createExtender(dictionary)
                 .withExpectedTotalChars(3)
                 .build();
-        combinationExtender.extend(charCountCombinationOf("a", "bb"));
+        combinationExtender.extend(wrap(charCountCombinationOf("a", "bb")));
     }
 
     @Test
@@ -109,15 +109,15 @@ public class CharCountCombinationExtenderTest extends AnagramTest {
         CharCountCombinationExtender combinationExtender = createExtender(dictionary)
                 .withResultCharCountIncludedIn(resultCharCountLimit)
                 .build();
-        Combination<CharCount> initialCombination = charCountCombinationOf("b", "ab");
-        List<Combination<CharCount>> extendedCombinations = combinationExtender.extend(initialCombination).collect(Collectors.toList());
+        CharCountCombination initialCombination = wrap(charCountCombinationOf("b", "ab"));
+        List<CharCountCombination> extendedCombinations = combinationExtender.extend(initialCombination).collect(Collectors.toList());
         assertThat(extendedCombinations).containsExactly(
-                charCountCombinationOf("b", "ab", "ab"),
-                charCountCombinationOf("b", "ab", "bb"),
-                charCountCombinationOf("b", "ab", "abb"),
-                charCountCombinationOf("b", "ab", "bbb"),
-                charCountCombinationOf("b", "ab", "abbb"),
-                charCountCombinationOf("b", "ab", "bbbb")
+                wrap(charCountCombinationOf("b", "ab", "ab")),
+                wrap(charCountCombinationOf("b", "ab", "bb")),
+                wrap(charCountCombinationOf("b", "ab", "abb")),
+                wrap(charCountCombinationOf("b", "ab", "bbb")),
+                wrap(charCountCombinationOf("b", "ab", "abbb")),
+                wrap(charCountCombinationOf("b", "ab", "bbbb"))
         );
     }
 
@@ -127,7 +127,7 @@ public class CharCountCombinationExtenderTest extends AnagramTest {
         CharCountCombinationExtender combinationExtender = createExtender(dictionary)
                 .withResultCharCountIncludedIn(resultCharCountLimit)
                 .build();
-        combinationExtender.extend(charCountCombinationOf("b", "ab"));
+        combinationExtender.extend(wrap(charCountCombinationOf("b", "ab")));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -136,7 +136,7 @@ public class CharCountCombinationExtenderTest extends AnagramTest {
         CharCountCombinationExtender combinationExtender = createExtender(dictionary)
                 .withResultCharCountIncludedIn(resultCharCountLimit)
                 .build();
-        combinationExtender.extend(charCountCombinationOf("a", "a"));
+        combinationExtender.extend(wrap(charCountCombinationOf("a", "a")));
     }
 
     @Test
@@ -147,13 +147,13 @@ public class CharCountCombinationExtenderTest extends AnagramTest {
                 .withResultTotalCharsNotLowerThan(3)
                 .withResultTotalCharsNotHigherThan(4)
                 .build();
-        Combination<CharCount> initialCombination = charCountCombinationOf("b");
-        List<Combination<CharCount>> extendedCombinations = combinationExtender.extend(initialCombination).collect(Collectors.toList());
+        CharCountCombination initialCombination = wrap(charCountCombinationOf("b"));
+        List<CharCountCombination> extendedCombinations = combinationExtender.extend(initialCombination).collect(Collectors.toList());
         assertThat(extendedCombinations).containsExactly(
-                charCountCombinationOf("b", "ab"),
-                charCountCombinationOf("b", "bb"),
-                charCountCombinationOf("b", "abb"),
-                charCountCombinationOf("b", "bbb")
+                wrap(charCountCombinationOf("b", "ab")),
+                wrap(charCountCombinationOf("b", "bb")),
+                wrap(charCountCombinationOf("b", "abb")),
+                wrap(charCountCombinationOf("b", "bbb"))
         );
     }
 }

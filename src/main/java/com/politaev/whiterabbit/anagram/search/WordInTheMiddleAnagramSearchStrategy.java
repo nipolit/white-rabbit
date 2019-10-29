@@ -58,8 +58,7 @@ public class WordInTheMiddleAnagramSearchStrategy extends AnagramSearchStrategy 
 
     private Stream<CharCountCombination> streamExtendedCombinations(CharCountCombination combination) {
         CharCountCombinationExtender wordInTheMiddleAdder = createWordInTheMiddleAdder(combination);
-        return wordInTheMiddleAdder.extend(combination)
-                .map(CharCountCombination::wrap);
+        return wordInTheMiddleAdder.extend(combination);
     }
 
     private CharCountCombinationExtender createWordInTheMiddleAdder(CharCountCombination combination) {
