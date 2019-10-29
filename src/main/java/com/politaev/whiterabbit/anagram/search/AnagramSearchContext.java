@@ -13,20 +13,11 @@ class AnagramSearchContext {
     private final CombinationWithDesiredCharCountSumComposer anagramComposer;
     private final Set<CharCountCombination> combinations;
 
-    static AddAnagramCharCount createAnagramSearchContext() {
-        return anagramCharCount
-                -> anagramWordLimit
-                -> dictionary
-                -> anagramComposer
-                -> combinations
-                -> new AnagramSearchContext(anagramCharCount, anagramWordLimit, dictionary, anagramComposer, combinations);
-    }
-
-    private AnagramSearchContext(CharCount anagramCharCount,
-                                 int anagramWordLimit,
-                                 Dictionary dictionary,
-                                 CombinationWithDesiredCharCountSumComposer anagramComposer,
-                                 Set<CharCountCombination> combinations) {
+    AnagramSearchContext(CharCount anagramCharCount,
+                         int anagramWordLimit,
+                         Dictionary dictionary,
+                         CombinationWithDesiredCharCountSumComposer anagramComposer,
+                         Set<CharCountCombination> combinations) {
         this.anagramCharCount = anagramCharCount;
         this.anagramWordLimit = anagramWordLimit;
         this.dictionary = dictionary;
@@ -52,25 +43,5 @@ class AnagramSearchContext {
 
     Set<CharCountCombination> getCombinations() {
         return combinations;
-    }
-
-    interface AddAnagramCharCount {
-        AddAnagramWordLimit toSearchAnagramsWithCharCountSum(CharCount anagramCharCounts);
-    }
-
-    interface AddAnagramWordLimit {
-        AddDictionary withWordNumberLimitedBy(int anagramWordLimit);
-    }
-
-    interface AddDictionary {
-        AddAnagramComposer withWordsFromDictionary(Dictionary dictionary);
-    }
-
-    interface AddAnagramComposer {
-        AddCombinations withAnagramComposer(CombinationWithDesiredCharCountSumComposer anagramComposer);
-    }
-
-    interface AddCombinations {
-        AnagramSearchContext usingCombinationsGeneratedInAdvance(Set<CharCountCombination> combinations);
     }
 }

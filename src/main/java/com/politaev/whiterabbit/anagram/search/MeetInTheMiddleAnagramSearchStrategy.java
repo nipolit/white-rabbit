@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import static com.politaev.whiterabbit.anagram.search.AnagramSearchContext.createAnagramSearchContext;
 import static com.politaev.whiterabbit.anagram.search.CharCountCombinationGenerator.createGenerator;
 import static com.politaev.whiterabbit.anagram.search.CombinationWithDesiredCharCountSumComposer.createCombinationComposer;
 import static java.util.Arrays.asList;
@@ -82,12 +81,11 @@ public class MeetInTheMiddleAnagramSearchStrategy extends CompositeAnagramSearch
         }
 
         AnagramSearchContext createContext() {
-            return createAnagramSearchContext()
-                    .toSearchAnagramsWithCharCountSum(anagramCharCount)
-                    .withWordNumberLimitedBy(anagramWordLimit)
-                    .withWordsFromDictionary(dictionary)
-                    .withAnagramComposer(anagramComposer)
-                    .usingCombinationsGeneratedInAdvance(combinationsNotOverHalfAnagramLength);
+            return new AnagramSearchContext(anagramCharCount,
+                    anagramWordLimit,
+                    dictionary,
+                    anagramComposer,
+                    combinationsNotOverHalfAnagramLength);
         }
 
     }
