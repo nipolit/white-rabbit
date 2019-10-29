@@ -10,12 +10,7 @@ import org.junit.Before;
 import org.junit.Rule;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
-
-import static com.politaev.whiterabbit.anagram.search.AnagramSearchContext.createAnagramSearchContext;
-import static com.politaev.whiterabbit.anagram.search.CharCountCombinationGenerator.createGenerator;
-import static com.politaev.whiterabbit.anagram.search.CombinationWithDesiredCharCountSumComposer.createCombinationComposer;
 
 public abstract class AnagramSearchStrategyTest extends AnagramTest {
 
@@ -26,7 +21,7 @@ public abstract class AnagramSearchStrategyTest extends AnagramTest {
     public AnnotationValueRule<SizeLimit, Integer> sizeLimit = new AnnotationValueRule<>(SizeLimit.class);
 
     CharCount givenPhraseCharCount;
-    Set<CharCountCombination> combinationsNotOverHalfAnagramLength;
+    int sizeLimitValue;
     AnagramSearchContext context;
     AnagramSearchStrategy searchStrategy;
     List<Combination<CharCount>> foundAnagrams;
@@ -34,42 +29,29 @@ public abstract class AnagramSearchStrategyTest extends AnagramTest {
     @Override
     @Before
     public void setUp() {
+        super.setUp();
         initializeContext();
         performSearch();
     }
 
     private void initializeContext() {
-        super.setUp();
+        getRuleValues();
+        MeetInTheMiddleAnagramSearchStrategy.SearchContextBuilder contextBuilder =
+                new MeetInTheMiddleAnagramSearchStrategy.SearchContextBuilder(givenPhraseCharCount, sizeLimitValue, dictionary);
+        context = contextBuilder.createContext();
+    }
+
+    private void getRuleValues() {
+        getGivenPhrase();
+        getSizeLimit();
+    }
+
+    private void getGivenPhrase() {
         givenPhraseCharCount = charCounter.countChars(givenPhrase.getValue());
-        combinationsNotOverHalfAnagramLength = computeCombinationsUnderHalfGivenPhraseLength();
-        context = createAnagramSearchContext()
-                .toSearchAnagramsWithCharCountSum(givenPhraseCharCount)
-                .withWordNumberLimitedBy(getSizeLimit())
-                .withWordsFromDictionary(dictionary)
-                .withAnagramComposer(createAnagramComposer())
-                .usingCombinationsGeneratedInAdvance(combinationsNotOverHalfAnagramLength);
     }
 
-    private int getSizeLimit() {
-        Integer sizeLimitValue = sizeLimit.getValue();
-        if (sizeLimitValue != null) return sizeLimitValue;
-        else return givenPhraseCharCount.totalChars();
-    }
-
-    private Set<CharCountCombination> computeCombinationsUnderHalfGivenPhraseLength() {
-        CharCountCombinationGenerator generator = createGenerator()
-                .withDictionary(dictionary)
-                .withTotalCharsLimit(givenPhraseCharCount.totalChars() / 2)
-                .withCombinationSizeLimit(getSizeLimit() - 1)
-                .withCharCountLimit(givenPhraseCharCount);
-        return generator.generateAllWithinLimits();
-    }
-
-    private CombinationWithDesiredCharCountSumComposer createAnagramComposer() {
-        return createCombinationComposer()
-                .composingCombinationsWithSumEqualTo(givenPhraseCharCount)
-                .andSizeLimitedBy(getSizeLimit())
-                .bySelectingAdditionsFrom(combinationsNotOverHalfAnagramLength);
+    private void getSizeLimit() {
+        sizeLimitValue = (sizeLimit.getValue() != null) ? sizeLimit.getValue() : givenPhraseCharCount.totalChars();
     }
 
     private void performSearch() {

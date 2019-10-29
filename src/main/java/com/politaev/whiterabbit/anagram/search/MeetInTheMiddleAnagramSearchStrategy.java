@@ -44,7 +44,7 @@ public class MeetInTheMiddleAnagramSearchStrategy extends CompositeAnagramSearch
         return unmodifiableList(necessaryStrategies);
     }
 
-    private static class SearchContextBuilder {
+    static class SearchContextBuilder {
 
         private CharCount anagramCharCount;
         private int anagramWordLimit;
@@ -53,7 +53,7 @@ public class MeetInTheMiddleAnagramSearchStrategy extends CompositeAnagramSearch
         private Set<CharCountCombination> combinationsNotOverHalfAnagramLength;
         private CombinationWithDesiredCharCountSumComposer anagramComposer;
 
-        private SearchContextBuilder(CharCount anagramCharCount, int anagramWordLimit, Dictionary dictionary) {
+        SearchContextBuilder(CharCount anagramCharCount, int anagramWordLimit, Dictionary dictionary) {
             this.anagramCharCount = anagramCharCount;
             this.anagramWordLimit = anagramWordLimit;
             this.dictionary = dictionary;
@@ -81,7 +81,7 @@ public class MeetInTheMiddleAnagramSearchStrategy extends CompositeAnagramSearch
                     .bySelectingAdditionsFrom(combinationsNotOverHalfAnagramLength);
         }
 
-        private AnagramSearchContext createContext() {
+        AnagramSearchContext createContext() {
             return createAnagramSearchContext()
                     .toSearchAnagramsWithCharCountSum(anagramCharCount)
                     .withWordNumberLimitedBy(anagramWordLimit)
