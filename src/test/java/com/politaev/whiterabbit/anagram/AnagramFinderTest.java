@@ -1,6 +1,5 @@
 package com.politaev.whiterabbit.anagram;
 
-import com.politaev.whiterabbit.combinatorics.Combination;
 import com.politaev.whiterabbit.counter.CharCount;
 import com.politaev.whiterabbit.util.AnnotationValueRule;
 import org.junit.Before;
@@ -15,14 +14,24 @@ import static org.fest.assertions.Assertions.assertThat;
 
 public class AnagramFinderTest extends AnagramTest {
 
+    private static final String[] WORDS = new String[]{
+            "a", "b",
+            "aa", "ab", "ba", "bb",
+            "aaa", "aab", "aba", "baa", "abb", "bab", "bba", "bbb"
+    };
     private CharCount givenPhraseCharCount;
-    private List<Combination<CharCount>> foundAnagrams;
+    private List<String> foundAnagrams;
 
     @Rule
     public AnnotationValueRule<GivenPhrase, String> givenPhrase = new AnnotationValueRule<>(GivenPhrase.class);
 
     @Rule
     public AnnotationValueRule<SizeLimit, Integer> sizeLimit = new AnnotationValueRule<>(SizeLimit.class);
+
+    @Override
+    protected String[] getWords() {
+        return WORDS;
+    }
 
     @Override
     @Before
@@ -33,7 +42,7 @@ public class AnagramFinderTest extends AnagramTest {
                 .searchingAnagramsWithCharCountSum(givenPhraseCharCount)
                 .withWordNumberLimitedBy(getSizeLimit())
                 .withWordsFromDictionary(dictionary);
-        foundAnagrams = anagramFinder.findAllCombinations().collect(Collectors.toList());
+        foundAnagrams = anagramFinder.findAnagrams().collect(Collectors.toList());
     }
 
     private int getSizeLimit() {
@@ -42,111 +51,64 @@ public class AnagramFinderTest extends AnagramTest {
         else return givenPhraseCharCount.totalChars();
     }
 
-    @GivenPhrase("aaabbb")
+    @GivenPhrase("aabb")
     @Test
     public void findAllEvenLength() {
         assertThat(foundAnagrams).containsOnly(
-                charCountCombinationOf("a", "a", "a", "b", "b", "b"),
-                charCountCombinationOf("a", "b", "b", "b", "aa"),
-                charCountCombinationOf("a", "a", "b", "b", "ab"),
-                charCountCombinationOf("a", "a", "a", "b", "bb"),
-                charCountCombinationOf("a", "a", "a", "bbb"),
-                charCountCombinationOf("a", "a", "b", "abb"),
-                charCountCombinationOf("a", "b", "b", "aab"),
-                charCountCombinationOf("b", "b", "b", "aaa"),
-                charCountCombinationOf("a", "a", "ab", "bb"),
-                charCountCombinationOf("a", "b", "aa", "bb"),
-                charCountCombinationOf("a", "b", "ab", "ab"),
-                charCountCombinationOf("b", "b", "aa", "ab"),
-                charCountCombinationOf("a", "a", "abbb"),
-                charCountCombinationOf("a", "b", "aabb"),
-                charCountCombinationOf("b", "b", "aaab"),
-                charCountCombinationOf("a", "aa", "bbb"),
-                charCountCombinationOf("a", "ab", "abb"),
-                charCountCombinationOf("a", "bb", "aab"),
-                charCountCombinationOf("b", "aa", "abb"),
-                charCountCombinationOf("b", "ab", "aab"),
-                charCountCombinationOf("b", "bb", "aaa"),
-                charCountCombinationOf("aa", "ab", "bb"),
-                charCountCombinationOf("ab", "ab", "ab"),
-                charCountCombinationOf("aa", "abbb"),
-                charCountCombinationOf("ab", "aabb"),
-                charCountCombinationOf("bb", "aaab"),
-                charCountCombinationOf("aaa", "bbb"),
-                charCountCombinationOf("aab", "abb")
+                "a a b b", "a b a b", "a b b a", "b a a b", "b a b a", "b b a a",
+                "a a bb", "a bb a", "bb a a",
+                "b b aa", "b aa b", "aa b b",
+                "a b ab", "a ab b", "ab a b", "b a ab", "b ab a", "ab b a",
+                "a b ba", "a ba b", "ba a b", "b a ba", "b ba a", "ba b a",
+                "aa bb", "bb aa", "ab ba", "ba ab", "ab ab", "ba ba",
+                "a abb", "a bab", "a bba", "abb a", "bab a", "bba a",
+                "b aab", "b aba", "b baa", "aab b", "aba b", "baa b"
         );
     }
 
-    @GivenPhrase("aaabb")
+    @GivenPhrase("abb")
     @Test
     public void findAllOddLength() {
         assertThat(foundAnagrams).containsOnly(
-                charCountCombinationOf("a", "a", "a", "b", "b"),
-                charCountCombinationOf("a", "a", "a", "bb"),
-                charCountCombinationOf("a", "a", "b", "ab"),
-                charCountCombinationOf("a", "b", "b", "aa"),
-                charCountCombinationOf("a", "a", "abb"),
-                charCountCombinationOf("a", "b", "aab"),
-                charCountCombinationOf("b", "b", "aaa"),
-                charCountCombinationOf("a", "aa", "bb"),
-                charCountCombinationOf("a", "ab", "ab"),
-                charCountCombinationOf("b", "aa", "ab"),
-                charCountCombinationOf("aa", "abb"),
-                charCountCombinationOf("ab", "aab"),
-                charCountCombinationOf("bb", "aaa"),
-                charCountCombinationOf("a", "aabb"),
-                charCountCombinationOf("b", "aaab")
+                "a b b", "b a b", "b b a",
+                "a bb", "bb a",
+                "b ab", "ab b",
+                "b ba", "ba b",
+                "abb", "bba", "bab"
         );
     }
 
-    @GivenPhrase("aaabbb")
-    @SizeLimit(4)
+    @GivenPhrase("aabb")
+    @SizeLimit(3)
     @Test
     public void limitWordsEvenLength() {
         assertThat(foundAnagrams).containsOnly(
-                charCountCombinationOf("a", "a", "a", "bbb"),
-                charCountCombinationOf("a", "a", "b", "abb"),
-                charCountCombinationOf("a", "b", "b", "aab"),
-                charCountCombinationOf("b", "b", "b", "aaa"),
-                charCountCombinationOf("a", "a", "ab", "bb"),
-                charCountCombinationOf("a", "b", "aa", "bb"),
-                charCountCombinationOf("a", "b", "ab", "ab"),
-                charCountCombinationOf("b", "b", "aa", "ab"),
-                charCountCombinationOf("a", "a", "abbb"),
-                charCountCombinationOf("a", "b", "aabb"),
-                charCountCombinationOf("b", "b", "aaab"),
-                charCountCombinationOf("a", "aa", "bbb"),
-                charCountCombinationOf("a", "ab", "abb"),
-                charCountCombinationOf("a", "bb", "aab"),
-                charCountCombinationOf("b", "aa", "abb"),
-                charCountCombinationOf("b", "ab", "aab"),
-                charCountCombinationOf("b", "bb", "aaa"),
-                charCountCombinationOf("aa", "ab", "bb"),
-                charCountCombinationOf("ab", "ab", "ab"),
-                charCountCombinationOf("aa", "abbb"),
-                charCountCombinationOf("ab", "aabb"),
-                charCountCombinationOf("bb", "aaab"),
-                charCountCombinationOf("aaa", "bbb"),
-                charCountCombinationOf("aab", "abb")
+                "a a bb", "a bb a", "bb a a",
+                "b b aa", "b aa b", "aa b b",
+                "a b ab", "a ab b", "ab a b", "b a ab", "b ab a", "ab b a",
+                "a b ba", "a ba b", "ba a b", "b a ba", "b ba a", "ba b a",
+                "aa bb", "bb aa", "ab ba", "ba ab", "ab ab", "ba ba",
+                "a abb", "a bab", "a bba", "abb a", "bab a", "bba a",
+                "b aab", "b aba", "b baa", "aab b", "aba b", "baa b"
         );
     }
 
-    @GivenPhrase("aaabb")
-    @SizeLimit(3)
+    @GivenPhrase("abb")
+    @SizeLimit(2)
     @Test
     public void limitWordsOddLength() {
         assertThat(foundAnagrams).containsOnly(
-                charCountCombinationOf("a", "a", "abb"),
-                charCountCombinationOf("a", "b", "aab"),
-                charCountCombinationOf("b", "b", "aaa"),
-                charCountCombinationOf("a", "aa", "bb"),
-                charCountCombinationOf("a", "ab", "ab"),
-                charCountCombinationOf("b", "aa", "ab"),
-                charCountCombinationOf("aa", "abb"),
-                charCountCombinationOf("ab", "aab"),
-                charCountCombinationOf("bb", "aaa"),
-                charCountCombinationOf("a", "aabb"),
-                charCountCombinationOf("b", "aaab")
+                "a bb", "bb a",
+                "b ab", "ab b",
+                "b ba", "ba b",
+                "abb", "bba", "bab"
         );
+    }
+
+    @GivenPhrase("aabb")
+    @SizeLimit(1)
+    @Test
+    public void testNoResult() {
+        assertThat(foundAnagrams).isEmpty();
     }
 }

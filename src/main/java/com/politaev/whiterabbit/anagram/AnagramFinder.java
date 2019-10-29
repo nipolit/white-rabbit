@@ -1,7 +1,7 @@
 package com.politaev.whiterabbit.anagram;
 
+import com.politaev.whiterabbit.anagram.output.PhraseResolver;
 import com.politaev.whiterabbit.anagram.search.AnagramSearchStrategy;
-import com.politaev.whiterabbit.combinatorics.Combination;
 import com.politaev.whiterabbit.counter.CharCount;
 import com.politaev.whiterabbit.dictionary.Dictionary;
 
@@ -12,6 +12,7 @@ import static com.politaev.whiterabbit.anagram.search.MeetInTheMiddleAnagramSear
 public class AnagramFinder {
 
     private final AnagramSearchStrategy anagramSearchStrategy;
+    private final PhraseResolver phraseResolver;
 
     public static AddAnagramCharCount createAnagramFinder() {
         return anagramCharCount
@@ -25,10 +26,12 @@ public class AnagramFinder {
                 .searchingAnagramsWithCharCountSum(anagramCharCount)
                 .withWordNumberLimitedBy(anagramWordLimit)
                 .withWordsFromDictionary(dictionary);
+        phraseResolver = new PhraseResolver(dictionary);
     }
 
-    public Stream<Combination<CharCount>> findAllCombinations() {
-        return anagramSearchStrategy.search();
+    public Stream<String> findAnagrams() {
+        return anagramSearchStrategy.search()
+                .flatMap(phraseResolver::resolve);
     }
 
     public interface AddAnagramCharCount {
