@@ -1,4 +1,4 @@
-package com.politaev.whiterabbit.anagram.finder;
+package com.politaev.whiterabbit.anagram.search;
 
 import com.politaev.whiterabbit.combinatorics.Combination;
 import com.politaev.whiterabbit.counter.CharCount;
@@ -7,7 +7,7 @@ import com.politaev.whiterabbit.dictionary.Dictionary;
 
 import java.util.stream.Stream;
 
-import static com.politaev.whiterabbit.anagram.finder.CharCountCombination.wrap;
+import static com.politaev.whiterabbit.anagram.search.CharCountCombination.wrap;
 
 class CharCountCombinationExtender {
     private final CharCountTaxonomy charCountTaxonomy;

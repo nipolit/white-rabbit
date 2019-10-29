@@ -1,4 +1,4 @@
-package com.politaev.whiterabbit.anagram.finder;
+package com.politaev.whiterabbit.anagram.search;
 
 import com.politaev.whiterabbit.anagram.AnagramTest;
 import com.politaev.whiterabbit.combinatorics.Combination;
@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.politaev.whiterabbit.anagram.finder.AnagramSearchContext.createAnagramSearchContext;
-import static com.politaev.whiterabbit.anagram.finder.CharCountCombinationGenerator.createGenerator;
-import static com.politaev.whiterabbit.anagram.finder.CombinationWithDesiredCharCountSumComposer.createCombinationComposer;
+import static com.politaev.whiterabbit.anagram.search.AnagramSearchContext.createAnagramSearchContext;
+import static com.politaev.whiterabbit.anagram.search.CharCountCombinationGenerator.createGenerator;
+import static com.politaev.whiterabbit.anagram.search.CombinationWithDesiredCharCountSumComposer.createCombinationComposer;
 
 public abstract class AnagramSearchStrategyTest extends AnagramTest {
 

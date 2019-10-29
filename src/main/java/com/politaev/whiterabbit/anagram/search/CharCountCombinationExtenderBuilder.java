@@ -1,4 +1,4 @@
-package com.politaev.whiterabbit.anagram.finder;
+package com.politaev.whiterabbit.anagram.search;
 
 import com.politaev.whiterabbit.counter.CharCount;
 import com.politaev.whiterabbit.dictionary.Dictionary;

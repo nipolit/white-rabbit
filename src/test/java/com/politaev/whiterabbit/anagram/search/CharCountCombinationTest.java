@@ -1,11 +1,11 @@
-package com.politaev.whiterabbit.anagram.finder;
+package com.politaev.whiterabbit.anagram.search;
 
 import com.politaev.whiterabbit.anagram.AnagramTest;
 import com.politaev.whiterabbit.combinatorics.Combination;
 import com.politaev.whiterabbit.counter.CharCount;
 import org.junit.Test;
 
-import static com.politaev.whiterabbit.anagram.finder.CharCountCombination.wrap;
+import static com.politaev.whiterabbit.anagram.search.CharCountCombination.wrap;
 import static org.junit.Assert.assertEquals;
 
 public class CharCountCombinationTest extends AnagramTest {

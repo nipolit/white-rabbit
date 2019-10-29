@@ -1,4 +1,4 @@
-package com.politaev.whiterabbit.anagram.finder;
+package com.politaev.whiterabbit.anagram.search;
 
 import com.politaev.whiterabbit.anagram.AnagramTest;
 import com.politaev.whiterabbit.combinatorics.Combination;
@@ -8,7 +8,7 @@ import org.junit.Test;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.politaev.whiterabbit.anagram.finder.CharCountCombinationExtender.createExtender;
+import static com.politaev.whiterabbit.anagram.search.CharCountCombinationExtender.createExtender;
 import static org.fest.assertions.Assertions.assertThat;
 
 

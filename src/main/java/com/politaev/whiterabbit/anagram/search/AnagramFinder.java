@@ -1,4 +1,4 @@
-package com.politaev.whiterabbit.anagram.finder;
+package com.politaev.whiterabbit.anagram.search;
 
 import com.politaev.whiterabbit.combinatorics.Combination;
 import com.politaev.whiterabbit.counter.CharCount;
@@ -7,9 +7,9 @@ import com.politaev.whiterabbit.dictionary.Dictionary;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import static com.politaev.whiterabbit.anagram.finder.AnagramSearchContext.createAnagramSearchContext;
-import static com.politaev.whiterabbit.anagram.finder.CharCountCombinationGenerator.createGenerator;
-import static com.politaev.whiterabbit.anagram.finder.CombinationWithDesiredCharCountSumComposer.createCombinationComposer;
+import static com.politaev.whiterabbit.anagram.search.AnagramSearchContext.createAnagramSearchContext;
+import static com.politaev.whiterabbit.anagram.search.CharCountCombinationGenerator.createGenerator;
+import static com.politaev.whiterabbit.anagram.search.CombinationWithDesiredCharCountSumComposer.createCombinationComposer;
 
 public class AnagramFinder {
 
