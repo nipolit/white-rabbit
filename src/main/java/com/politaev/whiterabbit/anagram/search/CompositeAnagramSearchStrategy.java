@@ -18,7 +18,7 @@ abstract class CompositeAnagramSearchStrategy extends AnagramSearchStrategy {
     abstract List<AnagramSearchStrategy> createAnagramSearchStrategies();
 
     @Override
-    Stream<Combination<CharCount>> search() {
+    public Stream<Combination<CharCount>> search() {
         return strategies.stream()
                 .flatMap(AnagramSearchStrategy::search);
     }

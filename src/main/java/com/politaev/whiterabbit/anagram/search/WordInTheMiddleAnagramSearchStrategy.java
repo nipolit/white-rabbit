@@ -21,7 +21,7 @@ public class WordInTheMiddleAnagramSearchStrategy extends AnagramSearchStrategy 
     }
 
     @Override
-    Stream<Combination<CharCount>> search() {
+    public Stream<Combination<CharCount>> search() {
         CombinationWithDesiredCharCountSumComposer anagramComposer = getAnagramComposer();
         return getCombinations().stream()
                 .filter(this::validBaseForWordInTheMiddleAnagram)

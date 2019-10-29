@@ -1,6 +1,5 @@
-package com.politaev.whiterabbit.anagram.search;
+package com.politaev.whiterabbit.anagram;
 
-import com.politaev.whiterabbit.anagram.AnagramTest;
 import com.politaev.whiterabbit.combinatorics.Combination;
 import com.politaev.whiterabbit.counter.CharCount;
 import com.politaev.whiterabbit.util.AnnotationValueRule;
@@ -11,7 +10,7 @@ import org.junit.Test;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.politaev.whiterabbit.anagram.search.AnagramFinder.createAnagramFinder;
+import static com.politaev.whiterabbit.anagram.AnagramFinder.createAnagramFinder;
 import static org.fest.assertions.Assertions.assertThat;
 
 public class AnagramFinderTest extends AnagramTest {

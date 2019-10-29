@@ -7,15 +7,15 @@ import com.politaev.whiterabbit.dictionary.Dictionary;
 import java.util.Set;
 import java.util.stream.Stream;
 
-abstract class AnagramSearchStrategy {
+public abstract class AnagramSearchStrategy {
 
     private final AnagramSearchContext context;
 
-    protected AnagramSearchStrategy(AnagramSearchContext context) {
+    AnagramSearchStrategy(AnagramSearchContext context) {
         this.context = context;
     }
 
-    abstract Stream<Combination<CharCount>> search();
+    public abstract Stream<Combination<CharCount>> search();
 
     CharCount getAnagramCharCount() {
         return context.getAnagramCharCount();

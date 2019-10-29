@@ -1,5 +1,6 @@
-package com.politaev.whiterabbit.anagram.search;
+package com.politaev.whiterabbit.anagram;
 
+import com.politaev.whiterabbit.anagram.search.AnagramSearchStrategy;
 import com.politaev.whiterabbit.combinatorics.Combination;
 import com.politaev.whiterabbit.counter.CharCount;
 import com.politaev.whiterabbit.dictionary.Dictionary;

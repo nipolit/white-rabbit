@@ -13,7 +13,7 @@ import static com.politaev.whiterabbit.anagram.search.CombinationWithDesiredChar
 import static java.util.Arrays.asList;
 import static java.util.Collections.unmodifiableList;
 
-class MeetInTheMiddleAnagramSearchStrategy extends CompositeAnagramSearchStrategy {
+public class MeetInTheMiddleAnagramSearchStrategy extends CompositeAnagramSearchStrategy {
 
     public static AddAnagramCharCount createSearchStrategy() {
         return anagramCharCount

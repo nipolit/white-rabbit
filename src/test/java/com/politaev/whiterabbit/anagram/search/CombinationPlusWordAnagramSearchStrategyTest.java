@@ -1,5 +1,7 @@
 package com.politaev.whiterabbit.anagram.search;
 
+import com.politaev.whiterabbit.anagram.GivenPhrase;
+import com.politaev.whiterabbit.anagram.SizeLimit;
 import org.junit.Test;
 
 import static org.fest.assertions.Assertions.assertThat;

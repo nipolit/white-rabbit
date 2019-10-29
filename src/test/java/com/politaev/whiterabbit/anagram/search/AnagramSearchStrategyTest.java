@@ -1,6 +1,8 @@
 package com.politaev.whiterabbit.anagram.search;
 
 import com.politaev.whiterabbit.anagram.AnagramTest;
+import com.politaev.whiterabbit.anagram.GivenPhrase;
+import com.politaev.whiterabbit.anagram.SizeLimit;
 import com.politaev.whiterabbit.combinatorics.Combination;
 import com.politaev.whiterabbit.counter.CharCount;
 import com.politaev.whiterabbit.util.AnnotationValueRule;

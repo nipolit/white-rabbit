@@ -1,4 +1,4 @@
-package com.politaev.whiterabbit.anagram.search;
+package com.politaev.whiterabbit.anagram;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,6 +7,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
-public @interface GivenPhrase {
-    String value();
+public @interface SizeLimit {
+    int value();
 }
+
