@@ -7,10 +7,16 @@ import java.util.stream.IntStream;
 public final class CharCount implements Comparable<CharCount> {
     private final Alphabet alphabet;
     private final int[] countOfEveryChar;
+    private final int totalChars;
 
     CharCount(Alphabet alphabet, int[] countOfEveryChar) {
         this.alphabet = alphabet;
         this.countOfEveryChar = countOfEveryChar;
+        this.totalChars = countTotalChars();
+    }
+
+    private int countTotalChars() {
+        return IntStream.of(countOfEveryChar).sum();
     }
 
     public CharCount add(CharCount otherCharCount) {
@@ -58,8 +64,10 @@ public final class CharCount implements Comparable<CharCount> {
     }
 
     private boolean countingArrayIncludesOther(int[] otherCountingArray) {
-        return IntStream.range(0, countOfEveryChar.length)
-                .allMatch(i -> countOfEveryChar[i] >= otherCountingArray[i]);
+        for (int i = 0; i < countOfEveryChar.length; i++) {
+            if (countOfEveryChar[i] < otherCountingArray[i]) return false;
+        }
+        return true;
     }
 
     CharCount compress(AlphabetCompression alphabetCompression) {
@@ -81,7 +89,7 @@ public final class CharCount implements Comparable<CharCount> {
     }
 
     public int totalChars() {
-        return IntStream.of(countOfEveryChar).sum();
+        return totalChars;
     }
 
     Alphabet getAlphabet() {
