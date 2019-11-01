@@ -12,17 +12,17 @@ public class WordReader implements Closeable {
     private final BufferedReader bufferedReader;
     private final List<Predicate<String>> wordFilters;
 
-    public WordReader(String pathToResource) throws FileNotFoundException {
-        File file = getFileFromResources(pathToResource);
-        bufferedReader = new BufferedReader(new FileReader(file));
+    public WordReader(String pathToResource) throws IOException {
+        URL resourceURL = getResourceURL(pathToResource);
+        bufferedReader = new BufferedReader(new InputStreamReader(resourceURL.openStream()));
         wordFilters = new ArrayList<>();
     }
 
-    private static File getFileFromResources(String fileName) {
-        ClassLoader classLoader = WordReader.class.getClassLoader();
-        URL resource = classLoader.getResource(fileName);
-        Objects.requireNonNull(resource, "File not found");
-        return new File(resource.getFile());
+    private URL getResourceURL(String resourceName) {
+        ClassLoader classLoader = getClass().getClassLoader();
+        URL resourceURL = classLoader.getResource(resourceName);
+        Objects.requireNonNull(resourceURL, "Resource not found");
+        return resourceURL;
     }
 
     public void addWordFilter(Predicate<String> wordFilter) {
