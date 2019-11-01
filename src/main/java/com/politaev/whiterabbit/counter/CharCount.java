@@ -84,7 +84,7 @@ public final class CharCount implements Comparable<CharCount> {
         return IntStream.of(countOfEveryChar).sum();
     }
 
-    public Alphabet getAlphabet() {
+    Alphabet getAlphabet() {
         return alphabet;
     }
 
