@@ -15,6 +15,8 @@ import static com.politaev.whiterabbit.controller.ApplicationController.initiali
         descriptionHeading = "%n@|bold,underline Description|@:%n%n",
         parameterListHeading = "%n@|bold,underline Parameters|@:%n",
         optionListHeading = "%n@|bold,underline Options|@:%n",
+        footerHeading = "%n",
+        footer = {"More information at https://github.com/nipolit/white-rabbit", "@|green Nikita Politaev (c) 2019|@"},
         customSynopsis = "white-rabbit [-hV] -p=PHRASE -l=SIZE MD5...")
 public class App implements Runnable {
 
