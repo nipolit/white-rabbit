@@ -33,7 +33,7 @@ The solution doesn't operate with actual words, but instead it transforms words 
 * Using ordered combinations instead of phrases allows to consider each combination only once instead of up to `n!` times, where n is the number of words a combination consists of.
 * When considering different continuations of a combination it's safe to discard all continuations, that break the combination order.
 
-## Application flow:
+## Execution flow:
 1) The application is given a phrase, anagram word limit value and MD5 sums to find.
 2) All combinations of `CharCounts`, that satisfy the following conditions, are generated and stored: 
    * A combination is not longer than half of a given phrase.
@@ -54,7 +54,7 @@ These data is gathered by running the command:
 ```
 time java -Xmx6g -jar target/white-rabbit.jar -p "poultry outwits ants" -l {word-limit} 665e5bcb0c20062fe8abaaf4628bb154 23170acc097c24edb98fc5488ab033fe e4820b45d2277f3844eac66c903e84be
 ```
-The application manages to find all anagrams pretty quickly, and the application flow steps from 6 to 8 can be improved.
+The application manages to find all anagrams pretty quickly, and the execution flow steps from 6 to 8 can be improved.
 
 | Word limit | Time to find every anagram | Time to resolve and check MD5 sum of every anagram | 
 | :--------: | :------------------------: | :------------------------------------------------: |
